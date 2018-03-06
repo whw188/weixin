@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+   ">
+
+    <bean id="baseMapper" class="org.mybatis.spring.mapper.MapperFactoryBean" abstract="true" lazy-init="true">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="shelfMapper" parent="baseMapper">
+        <property name="mapperInterface" value="com.xzh.weixin.web.dao.ShelfMapper"/>
+    </bean>
+    <bean id="categoryMapper" parent="baseMapper">
+        <property name="mapperInterface" value="com.xzh.weixin.web.dao.CategoryMapper"/>
+    </bean>
+    <bean id="resourceMapper" parent="baseMapper">
+        <property name="mapperInterface" value="com.xzh.weixin.web.dao.ResourceMapper"/>
+    </bean>
+</beans>
