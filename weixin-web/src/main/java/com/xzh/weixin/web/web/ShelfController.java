@@ -25,7 +25,7 @@ public class ShelfController {
 
     @ResponseBody
     @RequestMapping(value = "/updateAgree", method = {RequestMethod.GET, RequestMethod.POST})
-    public ResponseDTO<String> updateAgree(String uid, String rid) {
+    public ResponseDTO<String> updateAgree(String uid, long rid) {
 
         ResponseDTO<String> responseDTO = shelfService.updateAgree(uid, rid, 1);
         return responseDTO;
@@ -33,7 +33,7 @@ public class ShelfController {
 
     @ResponseBody
     @RequestMapping(value = "/updateShelf", method = {RequestMethod.GET, RequestMethod.POST})
-    public ResponseDTO<String> updateShelf(String uid, String rid) {
+    public ResponseDTO<String> updateShelf(String uid, long rid) {
 
         ResponseDTO<String> responseDTO = shelfService.updateShelf(uid, rid, 1);
         return responseDTO;
@@ -41,9 +41,9 @@ public class ShelfController {
 
     @ResponseBody
     @RequestMapping(value = "/selectByUidAndRid", method = {RequestMethod.GET, RequestMethod.POST})
-    public ResponseDTO<List<ShelfModel>> selectByUidAndRid(String uid, String rid) {
+    public ResponseDTO<ShelfModel> selectByUidAndRid(String uid, long rid) {
 
-        ResponseDTO<List<ShelfModel>> responseDTO = shelfService.selectByUidAndRid(uid, rid);
+        ResponseDTO<ShelfModel> responseDTO = shelfService.selectByUidAndRid(uid, rid);
         return responseDTO;
     }
 

@@ -33,7 +33,7 @@ public class ShelfService {
         return responseDTO;
     }
 
-    public ResponseDTO<String> updateAgree(String uid, String rid, int agree) {
+    public ResponseDTO<String> updateAgree(String uid, long rid, int agree) {
 
         ResponseDTO<String> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
         try {
@@ -48,7 +48,7 @@ public class ShelfService {
         return responseDTO;
     }
 
-    public ResponseDTO<String> updateShelf(String uid, String rid, int shelf) {
+    public ResponseDTO<String> updateShelf(String uid, long rid, int shelf) {
 
         ResponseDTO<String> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
         try {
@@ -63,12 +63,12 @@ public class ShelfService {
         return responseDTO;
     }
 
-    public ResponseDTO<List<ShelfModel>> selectByUidAndRid(String uid, String rid) {
+    public ResponseDTO<ShelfModel> selectByUidAndRid(String uid, long rid) {
 
-        ResponseDTO<List<ShelfModel>> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
+        ResponseDTO<ShelfModel> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
 
         try {
-            List<ShelfModel> shelfModels = shelfMapper.selectByUidAndRid(uid, rid);
+            ShelfModel shelfModels = shelfMapper.selectByUidAndRid(uid, rid);
             responseDTO.setAttach(shelfModels);
             responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
         } catch (Exception e) {

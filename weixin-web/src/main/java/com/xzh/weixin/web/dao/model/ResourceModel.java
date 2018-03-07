@@ -4,15 +4,16 @@ import java.util.Date;
 
 public class ResourceModel {
 
-    private Long id;
-    private String rid;
+    private Long rid;
+    private String fileId;
+    private String fileName;
     private String uid;
     private String author;
     private String title;
     private String summary;
     private String type;
     private String imageId;
-    private Long categoryId;
+    private Long cid;
     private Integer viewCount;
     private Integer agreeCount;
     private Integer shelfCount;
@@ -20,45 +21,28 @@ public class ResourceModel {
     private Date updateTime;
     private Integer status;
 
-
-    public Integer getShelfCount() {
-        return shelfCount;
-    }
-
-    public void setShelfCount(Integer shelfCount) {
-        this.shelfCount = shelfCount;
-    }
-
-    public String getSummary() {
-        return summary;
-    }
-
-    public void setSummary(String summary) {
-        this.summary = summary;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getRid() {
+    public Long getRid() {
         return rid;
     }
 
-    public void setRid(String rid) {
+    public void setRid(Long rid) {
         this.rid = rid;
+    }
+
+    public String getFileId() {
+        return fileId;
+    }
+
+    public void setFileId(String fileId) {
+        this.fileId = fileId;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public String getUid() {
@@ -69,12 +53,28 @@ public class ResourceModel {
         this.uid = uid;
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
     public String getTitle() {
         return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 
     public String getType() {
@@ -93,12 +93,12 @@ public class ResourceModel {
         this.imageId = imageId;
     }
 
-    public Long getCategoryId() {
-        return categoryId;
+    public Long getCid() {
+        return cid;
     }
 
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
+    public void setCid(Long cid) {
+        this.cid = cid;
     }
 
     public Integer getViewCount() {
@@ -115,6 +115,14 @@ public class ResourceModel {
 
     public void setAgreeCount(Integer agreeCount) {
         this.agreeCount = agreeCount;
+    }
+
+    public Integer getShelfCount() {
+        return shelfCount;
+    }
+
+    public void setShelfCount(Integer shelfCount) {
+        this.shelfCount = shelfCount;
     }
 
     public Date getCreateTime() {

@@ -7,12 +7,13 @@
 
 <body>
 <form action="${pageContext.request.contextPath}/file/upload" enctype="multipart/form-data" method="post">
-    用户id：<input type="text" name="uid"><br/>
+    用户  id：<input type="text" name="uid"><br/>
+    内容作者：<input type="text" name="author"><br/>
     上传标题：<input type="text" name="title"><br/>
+    内容描述：<input type="text" name="summary"><br/>
     所属类别：<input type="text" name="categoryId"><br/>
     文件类型：<input type="text" name="type"><br/>
-    上传文件1：<input type="file" name="file1"><br/>
-    上传文件2：<input type="file" name="file2"><br/>
+    上传文件：<input type="file" name="fileName"><br/>
     <input type="submit" value="提交">
 </form>
 </body>

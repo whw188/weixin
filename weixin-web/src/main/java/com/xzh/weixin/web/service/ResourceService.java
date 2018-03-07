@@ -52,11 +52,11 @@ public class ResourceService {
         return responseDTO;
     }
 
-    public ResponseDTO<String> updateAgree(long id) {
+    public ResponseDTO<String> updateAgree(long rid) {
 
         ResponseDTO<String> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
         try {
-            int updateAgree = resourceMapper.updateAgree(id);
+            int updateAgree = resourceMapper.updateAgree(rid);
             if (updateAgree > 0) {
                 responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
             }
@@ -67,11 +67,11 @@ public class ResourceService {
         return responseDTO;
     }
 
-    public ResponseDTO<String> updateView(long id) {
+    public ResponseDTO<String> updateView(long rid) {
 
         ResponseDTO<String> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
         try {
-            int updateView = resourceMapper.updateView(id);
+            int updateView = resourceMapper.updateView(rid);
             if (updateView > 0) {
                 responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
             }
@@ -82,11 +82,11 @@ public class ResourceService {
         return responseDTO;
     }
 
-    public ResponseDTO<String> updateShelf(long id) {
+    public ResponseDTO<String> updateShelf(long rid) {
 
         ResponseDTO<String> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
         try {
-            int updateShelf = resourceMapper.updateShelf(id);
+            int updateShelf = resourceMapper.updateShelf(rid);
             if (updateShelf > 0) {
                 responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
             }
@@ -97,12 +97,12 @@ public class ResourceService {
         return responseDTO;
     }
 
-    public ResponseDTO<ResourceModel> selectById(long id) {
+    public ResponseDTO<ResourceModel> selectById(long rid) {
 
         ResponseDTO<ResourceModel> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
 
         try {
-            ResourceModel resourceModel = resourceMapper.selectById(id);
+            ResourceModel resourceModel = resourceMapper.selectById(rid);
             if (resourceModel != null) {
                 responseDTO.setAttach(resourceModel);
                 responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
@@ -114,12 +114,12 @@ public class ResourceService {
         return responseDTO;
     }
 
-    public ResponseDTO<List<ResourceModel>> selectByCategoryId(long categoryId) {
+    public ResponseDTO<List<ResourceModel>> selectByCid(long cid) {
 
         ResponseDTO<List<ResourceModel>> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
 
         try {
-            List<ResourceModel> resourceModels = resourceMapper.selectByCategoryId(categoryId);
+            List<ResourceModel> resourceModels = resourceMapper.selectByCid(cid);
             responseDTO.setAttach(resourceModels);
             responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
         } catch (Exception e) {
@@ -134,7 +134,7 @@ public class ResourceService {
         ResponseDTO<List<ResourceModel>> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
 
         try {
-            List<ResourceModel> resourceModels = resourceMapper.selectByTitleOrAuthor(keyWord);
+            List<ResourceModel> resourceModels = resourceMapper.selectByTitleOrAuthor(keyWord, keyWord);
             responseDTO.setAttach(resourceModels);
             responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
         } catch (Exception e) {
@@ -144,12 +144,12 @@ public class ResourceService {
         return responseDTO;
     }
 
-    public ResponseDTO<List<ResourceModel>> selectByTitleAndCid(String title, long cid) {
+    public ResponseDTO<List<ResourceModel>> selectByTitleAndCid(String keyWord, long cid) {
 
         ResponseDTO<List<ResourceModel>> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
 
         try {
-            List<ResourceModel> resourceModels = resourceMapper.selectByTitleAndCid(title, cid);
+            List<ResourceModel> resourceModels = resourceMapper.selectByTitleAndCid(keyWord, keyWord, cid);
             responseDTO.setAttach(resourceModels);
             responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
         } catch (Exception e) {

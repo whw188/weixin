@@ -5,13 +5,22 @@ import java.util.Date;
 public class ShelfModel {
 
 
+    private long sid;
     private String uid;
-    private String rid;
+    private long rid;
     private Integer agree;
     private Integer shelf;
     private Date createTime;
     private Date updateTime;
     private Integer status;
+
+    public long getSid() {
+        return sid;
+    }
+
+    public void setSid(long sid) {
+        this.sid = sid;
+    }
 
     public String getUid() {
         return uid;
@@ -21,11 +30,11 @@ public class ShelfModel {
         this.uid = uid;
     }
 
-    public String getRid() {
+    public long getRid() {
         return rid;
     }
 
-    public void setRid(String rid) {
+    public void setRid(long rid) {
         this.rid = rid;
     }
 

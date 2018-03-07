@@ -17,7 +17,7 @@ public interface CategoryMapper {
 
 
     @Select({
-            "select * from book_w_category "
+            "select * from category "
     })
     @Results({
             @Result(column = "cid", property = "cid", jdbcType = JdbcType.BIGINT),

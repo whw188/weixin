@@ -101,7 +101,13 @@ public class FileController {
             String uid = params.get("uid");
             String title = params.get("title");
             String type = params.get("type");
-            if (StringUtils.isBlank(uid) || StringUtils.isBlank(title) || StringUtils.isBlank(type)) {
+            String author = params.get("author");
+            String summary = params.get("summary");
+            if (StringUtils.isBlank(uid) ||
+                    StringUtils.isBlank(title) ||
+                    StringUtils.isBlank(type) ||
+                    StringUtils.isBlank(author) ||
+                    StringUtils.isBlank(summary)) {
                 responseDTO.setReturnCode(ReturnCode.ERROR_PARAMS);
                 return responseDTO;
             }
@@ -118,10 +124,12 @@ public class FileController {
 
             resourceModel.setUid(uid);
             resourceModel.setTitle(title);
+            resourceModel.setSummary(summary);
+            resourceModel.setAuthor(author);
             resourceModel.setType(type);
-            resourceModel.setCategoryId(categoryId);
+            resourceModel.setCid(categoryId);
 
-            String saveFileName = null;
+            String saveFileId = null;
             File file = null;
             String savePathStr = null;
             String fileName = null;
@@ -131,27 +139,32 @@ public class FileController {
                 logger.info(fileName);
                 if (fileName != null && !"".equals(fileName.trim())) {
                     //得到文件保存的名称
-                    fileName = UUID.randomUUID().toString();
+                    String fileId = UUID.randomUUID().toString();
                     //得到文件保存的路径
-                    savePathStr = mkFilePath(BASE_DIR, fileName);
+                    savePathStr = mkFilePath(BASE_DIR, fileId);
 
                     logger.info("保存路径为:" + savePathStr);
-                    file = new File(savePathStr + File.separator + fileName);
+                    file = new File(savePathStr + File.separator + fileId);
                     FileUtils.copyInputStreamToFile(item.getInputStream(), file);
-                    logger.info("保存成功:" + fileName);
-                    saveFileName = fileName;
+                    logger.info("保存成功:" + fileId);
+                    saveFileId = fileId;
                 }
             } catch (Exception e) {
+                if (file != null && file.exists()) {
+                    FileUtils.forceDelete(file);
+                    FileUtils.deleteDirectory(new File(savePathStr));
+                }
                 logger.error("保存文件失败:" + fileName, e);
             }
 
-            if (saveFileName != null) {
-                resourceModel.setRid(saveFileName);
+            if (saveFileId != null) {
+                resourceModel.setFileId(saveFileId);
+                resourceModel.setFileName(fileName);
                 ResponseDTO insert = resourceService.insert(resourceModel);
 
                 if (insert.getCode() == ReturnCode.ACTIVE_SUCCESS.code()) {
                     responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
-                    logger.info("上传成功:" + saveFileName);
+                    logger.info("上传成功:" + saveFileId);
                 } else {
                     FileUtils.forceDelete(file);
                     FileUtils.deleteDirectory(new File(savePathStr));
@@ -182,14 +195,14 @@ public class FileController {
 
     @ResponseBody
     @RequestMapping(value = "/download", method = {RequestMethod.GET, RequestMethod.POST})
-    public void download(HttpServletResponse response, long fid) {
+    public void download(HttpServletResponse response, long rid) {
 
-        ResponseDTO<ResourceModel> resourceModelResponseDTO = resourceService.selectById(fid);
+        ResponseDTO<ResourceModel> resourceModelResponseDTO = resourceService.selectById(rid);
         response.setCharacterEncoding(UTF8);
         response.setContentType("multipart/form-data");
 
         if (resourceModelResponseDTO.getCode() != ReturnCode.ACTIVE_SUCCESS.code()) {
-            String msg = "  未查询到对应资源：" + fid;
+            String msg = "  未查询到对应资源：" + rid;
             logger.info(msg);
             try {
                 response.sendError(404, "fid no exist");
@@ -201,23 +214,24 @@ public class FileController {
 
         ResourceModel resourceModel = resourceModelResponseDTO.getAttach();
 
-        String fileName = resourceModel.getRid();
+        String fileId = resourceModel.getFileId();
+        String fileName = resourceModel.getFileName();
         OutputStream os = null;
         FileInputStream in = null;
         try {
-            String path = mkFilePath(BASE_DIR, fileName);
-            File file = new File(path + File.separator + fileName);
+            String path = mkFilePath(BASE_DIR, fileId);
+            File file = new File(path + File.separator + fileId);
 
             if (!file.exists()) {
-                String msg = fileName + "资源已被删除！！";
+                String msg = fileId + "资源已被删除！！";
                 logger.info(msg);
                 response.sendError(404, "file no exist");
                 return;
             }
             //设置响应头，控制浏览器下载该文件
-            response.setHeader("content-disposition", "attachment;filename=" + fileName);
+            response.setHeader("content-disposition", "attachment;filename=" + new String(fileName.getBytes(), "ISO8859-1"));
 
-            in = new FileInputStream(path + File.separator + fileName);
+            in = new FileInputStream(path + File.separator + fileId);
             FileChannel readChannel = in.getChannel();
             os = response.getOutputStream();
 

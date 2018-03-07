@@ -17,19 +17,20 @@ public interface ResourceMapper {
 
 
     @Select({
-            "select * from book_w_resource",
+            "select * from resource",
             " order by view_count desc limit 4 "
     })
     @Results({
-            @Result(column = "id", property = "id", jdbcType = JdbcType.BIGINT),
-            @Result(column = "rid", property = "rid", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "rid", property = "rid", jdbcType = JdbcType.BIGINT),
+            @Result(column = "file_id", property = "fileId", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "file_name", property = "fileName", jdbcType = JdbcType.VARCHAR),
             @Result(column = "uid", property = "uid", jdbcType = JdbcType.VARCHAR),
             @Result(column = "author", property = "author", jdbcType = JdbcType.VARCHAR),
             @Result(column = "title", property = "title", jdbcType = JdbcType.VARCHAR),
             @Result(column = "summary", property = "summary", jdbcType = JdbcType.VARCHAR),
             @Result(column = "type", property = "type", jdbcType = JdbcType.VARCHAR),
             @Result(column = "image_id", property = "imageId", jdbcType = JdbcType.VARCHAR),
-            @Result(column = "category_id", property = "categoryId", jdbcType = JdbcType.BIGINT),
+            @Result(column = "cid", property = "cid", jdbcType = JdbcType.BIGINT),
             @Result(column = "view_count", property = "viewCount", jdbcType = JdbcType.INTEGER),
             @Result(column = "agree_count", property = "agreeCount", jdbcType = JdbcType.INTEGER),
             @Result(column = "shelf_count", property = "shelfCount", jdbcType = JdbcType.INTEGER),
@@ -40,19 +41,20 @@ public interface ResourceMapper {
     List<ResourceModel> recommond();
 
     @Select({
-            "select * from book_w_resource",
-            "where id = #{id,jdbcType=BIGINT} "
+            "select * from resource",
+            "where rid = #{rid,jdbcType=BIGINT} "
     })
     @Results({
-            @Result(column = "id", property = "id", jdbcType = JdbcType.BIGINT),
-            @Result(column = "rid", property = "rid", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "rid", property = "rid", jdbcType = JdbcType.BIGINT),
+            @Result(column = "file_id", property = "fileId", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "file_name", property = "fileName", jdbcType = JdbcType.VARCHAR),
             @Result(column = "uid", property = "uid", jdbcType = JdbcType.VARCHAR),
             @Result(column = "author", property = "author", jdbcType = JdbcType.VARCHAR),
             @Result(column = "title", property = "title", jdbcType = JdbcType.VARCHAR),
             @Result(column = "summary", property = "summary", jdbcType = JdbcType.VARCHAR),
             @Result(column = "type", property = "type", jdbcType = JdbcType.VARCHAR),
             @Result(column = "image_id", property = "imageId", jdbcType = JdbcType.VARCHAR),
-            @Result(column = "category_id", property = "categoryId", jdbcType = JdbcType.BIGINT),
+            @Result(column = "cid", property = "cid", jdbcType = JdbcType.BIGINT),
             @Result(column = "view_count", property = "viewCount", jdbcType = JdbcType.INTEGER),
             @Result(column = "agree_count", property = "agreeCount", jdbcType = JdbcType.INTEGER),
             @Result(column = "shelf_count", property = "shelfCount", jdbcType = JdbcType.INTEGER),
@@ -60,23 +62,25 @@ public interface ResourceMapper {
             @Result(column = "update_time", property = "updateTime", jdbcType = JdbcType.TIMESTAMP),
             @Result(column = "status", property = "status", jdbcType = JdbcType.INTEGER),
     })
-    ResourceModel selectById(@Param("id") long id);
+    ResourceModel selectById(@Param("rid") long rid);
 
 
     @Select({
-            "select * from book_w_resource",
-            "where author like  CONCAT('%','#{author,jdbcType=VARCHAR}','%' )  or title like  CONCAT('%','#{title,jdbcType=BIGINT}','%' )   "
+            "select * from resource",
+//            "where author like  '%${author} %' "
+            "where author like  CONCAT('%','${author}','%' )  or title like  CONCAT('%','${title}','%' )  "
     })
     @Results({
-            @Result(column = "id", property = "id", jdbcType = JdbcType.BIGINT),
-            @Result(column = "rid", property = "rid", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "rid", property = "rid", jdbcType = JdbcType.BIGINT),
+            @Result(column = "file_id", property = "fileId", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "file_name", property = "fileName", jdbcType = JdbcType.VARCHAR),
             @Result(column = "uid", property = "uid", jdbcType = JdbcType.VARCHAR),
             @Result(column = "author", property = "author", jdbcType = JdbcType.VARCHAR),
             @Result(column = "title", property = "title", jdbcType = JdbcType.VARCHAR),
             @Result(column = "summary", property = "summary", jdbcType = JdbcType.VARCHAR),
             @Result(column = "type", property = "type", jdbcType = JdbcType.VARCHAR),
             @Result(column = "image_id", property = "imageId", jdbcType = JdbcType.VARCHAR),
-            @Result(column = "category_id", property = "categoryId", jdbcType = JdbcType.BIGINT),
+            @Result(column = "cid", property = "cid", jdbcType = JdbcType.BIGINT),
             @Result(column = "view_count", property = "viewCount", jdbcType = JdbcType.INTEGER),
             @Result(column = "agree_count", property = "agreeCount", jdbcType = JdbcType.INTEGER),
             @Result(column = "shelf_count", property = "shelfCount", jdbcType = JdbcType.INTEGER),
@@ -84,22 +88,23 @@ public interface ResourceMapper {
             @Result(column = "update_time", property = "updateTime", jdbcType = JdbcType.TIMESTAMP),
             @Result(column = "status", property = "status", jdbcType = JdbcType.INTEGER),
     })
-    List<ResourceModel> selectByTitleOrAuthor(@Param("title") String title);
+    List<ResourceModel> selectByTitleOrAuthor(@Param("title") String title, @Param("author") String author);
 
     @Select({
-            "select * from book_w_resource",
-            "where category_id = #{categoryId,jdbcType=BIGINT} and  ( author like  CONCAT('%','#{author,jdbcType=VARCHAR}','%' )  or title like  CONCAT('%','#{title,jdbcType=BIGINT}','%' ))"
+            "select * from resource",
+            "where cid = #{cid,jdbcType=BIGINT} and  ( author like  CONCAT('%','${author}','%' )  or title like  CONCAT('%','${title}','%' ))"
     })
     @Results({
-            @Result(column = "id", property = "id", jdbcType = JdbcType.BIGINT),
-            @Result(column = "rid", property = "rid", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "rid", property = "rid", jdbcType = JdbcType.BIGINT),
+            @Result(column = "file_id", property = "fileId", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "file_name", property = "fileName", jdbcType = JdbcType.VARCHAR),
             @Result(column = "uid", property = "uid", jdbcType = JdbcType.VARCHAR),
             @Result(column = "author", property = "author", jdbcType = JdbcType.VARCHAR),
             @Result(column = "title", property = "title", jdbcType = JdbcType.VARCHAR),
             @Result(column = "summary", property = "summary", jdbcType = JdbcType.VARCHAR),
             @Result(column = "type", property = "type", jdbcType = JdbcType.VARCHAR),
             @Result(column = "image_id", property = "imageId", jdbcType = JdbcType.VARCHAR),
-            @Result(column = "category_id", property = "categoryId", jdbcType = JdbcType.BIGINT),
+            @Result(column = "cid", property = "cid", jdbcType = JdbcType.BIGINT),
             @Result(column = "view_count", property = "viewCount", jdbcType = JdbcType.INTEGER),
             @Result(column = "agree_count", property = "agreeCount", jdbcType = JdbcType.INTEGER),
             @Result(column = "shelf_count", property = "shelfCount", jdbcType = JdbcType.INTEGER),
@@ -107,22 +112,23 @@ public interface ResourceMapper {
             @Result(column = "update_time", property = "updateTime", jdbcType = JdbcType.TIMESTAMP),
             @Result(column = "status", property = "status", jdbcType = JdbcType.INTEGER),
     })
-    List<ResourceModel> selectByTitleAndCid(@Param("title") String title, @Param("categoryId") long categoryId);
+    List<ResourceModel> selectByTitleAndCid(@Param("title") String title, @Param("author") String author, @Param("cid") long cid);
 
     @Select({
-            "select * from book_w_resource",
+            "select * from resource",
             "where uid = #{uid,jdbcType=BIGINT} "
     })
     @Results({
-            @Result(column = "id", property = "id", jdbcType = JdbcType.BIGINT),
-            @Result(column = "rid", property = "rid", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "rid", property = "rid", jdbcType = JdbcType.BIGINT),
+            @Result(column = "file_id", property = "fileId", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "file_name", property = "fileName", jdbcType = JdbcType.VARCHAR),
             @Result(column = "uid", property = "uid", jdbcType = JdbcType.VARCHAR),
             @Result(column = "author", property = "author", jdbcType = JdbcType.VARCHAR),
             @Result(column = "title", property = "title", jdbcType = JdbcType.VARCHAR),
             @Result(column = "summary", property = "summary", jdbcType = JdbcType.VARCHAR),
             @Result(column = "type", property = "type", jdbcType = JdbcType.VARCHAR),
             @Result(column = "image_id", property = "imageId", jdbcType = JdbcType.VARCHAR),
-            @Result(column = "category_id", property = "categoryId", jdbcType = JdbcType.BIGINT),
+            @Result(column = "cid", property = "cid", jdbcType = JdbcType.BIGINT),
             @Result(column = "view_count", property = "viewCount", jdbcType = JdbcType.INTEGER),
             @Result(column = "agree_count", property = "agreeCount", jdbcType = JdbcType.INTEGER),
             @Result(column = "shelf_count", property = "shelfCount", jdbcType = JdbcType.INTEGER),
@@ -133,19 +139,20 @@ public interface ResourceMapper {
     List<ResourceModel> selectByUid(@Param("uid") String uid);
 
     @Select({
-            "select * from book_w_resource",
-            "where category_id = #{categoryId,jdbcType=BIGINT} "
+            "select * from resource",
+            "where cid = #{cid,jdbcType=BIGINT} "
     })
     @Results({
-            @Result(column = "id", property = "id", jdbcType = JdbcType.BIGINT),
-            @Result(column = "rid", property = "rid", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "rid", property = "rid", jdbcType = JdbcType.BIGINT),
+            @Result(column = "file_id", property = "fileId", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "file_name", property = "fileName", jdbcType = JdbcType.VARCHAR),
             @Result(column = "uid", property = "uid", jdbcType = JdbcType.VARCHAR),
             @Result(column = "author", property = "author", jdbcType = JdbcType.VARCHAR),
             @Result(column = "title", property = "title", jdbcType = JdbcType.VARCHAR),
             @Result(column = "summary", property = "summary", jdbcType = JdbcType.VARCHAR),
             @Result(column = "type", property = "type", jdbcType = JdbcType.VARCHAR),
             @Result(column = "image_id", property = "imageId", jdbcType = JdbcType.VARCHAR),
-            @Result(column = "category_id", property = "categoryId", jdbcType = JdbcType.BIGINT),
+            @Result(column = "cid", property = "cid", jdbcType = JdbcType.BIGINT),
             @Result(column = "view_count", property = "viewCount", jdbcType = JdbcType.INTEGER),
             @Result(column = "agree_count", property = "agreeCount", jdbcType = JdbcType.INTEGER),
             @Result(column = "shelf_count", property = "shelfCount", jdbcType = JdbcType.INTEGER),
@@ -153,32 +160,32 @@ public interface ResourceMapper {
             @Result(column = "update_time", property = "updateTime", jdbcType = JdbcType.TIMESTAMP),
             @Result(column = "status", property = "status", jdbcType = JdbcType.INTEGER),
     })
-    List<ResourceModel> selectByCategoryId(@Param("categoryId") long categoryId);
+    List<ResourceModel> selectByCid(@Param("cid") long cid);
 
     @Insert({
-            "insert into book_w_resource (rid, uid, author, title, summary, type, image_id, category_id)",
-            "values (#{rid,jdbcType=VARCHAR}, #{uid,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{imageId,jdbcType=VARCHAR}, #{categoryId,jdbcType=BIGINT} )"
+            "insert into resource (file_id, file_name, uid, author, title, summary, type, image_id, cid)",
+            "values (#{fileId,jdbcType=VARCHAR},  #{fileName,jdbcType=VARCHAR}, #{uid,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{imageId,jdbcType=VARCHAR}, #{cid,jdbcType=BIGINT} )"
     })
     int insert(ResourceModel resourceModel);
 
     @Update({
-            "update book_w_resource set",
+            "update resource set",
             "agree_count = agree_count + 1 ",
-            "where id = #{id,jdbcType=BIGINT} "
+            "where rid = #{rid,jdbcType=BIGINT} "
     })
-    int updateAgree(@Param("id") long id);
+    int updateAgree(@Param("rid") long rid);
 
     @Update({
-            "update book_w_resource set",
+            "update resource set",
             "view_count = view_count + 1 ",
-            "where id = #{id,jdbcType=BIGINT} "
+            "where rid = #{rid,jdbcType=BIGINT} "
     })
-    int updateView(@Param("id") long id);
+    int updateView(@Param("rid") long rid);
 
     @Update({
-            "update book_w_resource set",
+            "update resource set",
             "shelf_count = shelf_count + 1 ",
-            "where id = #{id,jdbcType=BIGINT} "
+            "where rid = #{rid,jdbcType=BIGINT} "
     })
-    int updateShelf(@Param("id") long id);
+    int updateShelf(@Param("rid") long rid);
 }
