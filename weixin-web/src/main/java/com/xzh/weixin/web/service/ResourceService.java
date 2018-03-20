@@ -7,6 +7,7 @@ import com.xzh.weixin.web.dao.model.ResourceModel;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -97,6 +98,21 @@ public class ResourceService {
         return responseDTO;
     }
 
+    public ResponseDTO<String> updateStatus(long rid, int status) {
+
+        ResponseDTO<String> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
+        try {
+            int updateShelf = resourceMapper.updateStatus(status, rid);
+            if (updateShelf > 0) {
+                responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseDTO.setReturnCode(ReturnCode.ACTIVE_EXCEPTION);
+        }
+        return responseDTO;
+    }
+
     public ResponseDTO<ResourceModel> selectById(long rid) {
 
         ResponseDTO<ResourceModel> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
@@ -107,6 +123,24 @@ public class ResourceService {
                 responseDTO.setAttach(resourceModel);
                 responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseDTO.setReturnCode(ReturnCode.ACTIVE_EXCEPTION);
+        }
+        return responseDTO;
+    }
+
+    public ResponseDTO<List<ResourceModel>> selectByStatus(int status) {
+
+        ResponseDTO<List<ResourceModel>> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
+
+        try {
+            List<ResourceModel> resourceModel = resourceMapper.selectByStatus(status);
+            if (resourceModel == null) {
+                resourceModel = new ArrayList<>();
+            }
+            responseDTO.setAttach(resourceModel);
+            responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
             responseDTO.setReturnCode(ReturnCode.ACTIVE_EXCEPTION);

@@ -223,4 +223,28 @@ public class ResourceController {
         ResponseDTO<List<ResourceModel>> responseDTO = resourceService.selectByTitleAndCid(keyWord, cid);
         return responseDTO;
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/updateStatus", method = {RequestMethod.GET, RequestMethod.POST})
+    public ResponseDTO<String> updateStatus(String uid, long rid, int status) {
+
+        ResponseDTO<String> result = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
+        if ("oDA605CZh1lIRB_JSDhm9RB7vtsc".equals(uid)) {
+            result = resourceService.updateStatus(rid, status);
+        }
+        return result;
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/selectStatus", method = {RequestMethod.GET, RequestMethod.POST})
+    public ResponseDTO<List<ResourceModel>> selectStatus(String uid, int status) {
+
+        ResponseDTO<List<ResourceModel>> result = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
+        if ("oDA605CZh1lIRB_JSDhm9RB7vtsc".equals(uid)) {
+            result = resourceService.selectByStatus(status);
+        }
+        return result;
+    }
+
 }
