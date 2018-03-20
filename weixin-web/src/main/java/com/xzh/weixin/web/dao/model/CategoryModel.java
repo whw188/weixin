@@ -1,5 +1,7 @@
 package com.xzh.weixin.web.dao.model;
 
+import com.xzh.weixin.web.utils.DateUtils;
+
 import java.util.Date;
 
 public class CategoryModel {
@@ -35,16 +37,16 @@ public class CategoryModel {
         this.detail = detail;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public String getCreateTime() {
+        return DateUtils.format(createTime);
     }
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
-    public Date getUpdateTime() {
-        return updateTime;
+    public String getUpdateTime() {
+        return DateUtils.format(updateTime);
     }
 
     public void setUpdateTime(Date updateTime) {
