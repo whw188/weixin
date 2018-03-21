@@ -34,8 +34,8 @@ import java.util.UUID;
 
 
 /**
- * @author wei.wang@fengjr.com
- * @version 2015年12月18日 上午10:30:51
+ * @author xuzh
+ * @version  2018年3月21日19:59:16
  */
 
 @Controller

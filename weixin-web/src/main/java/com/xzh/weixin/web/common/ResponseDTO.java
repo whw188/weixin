@@ -6,7 +6,7 @@ package com.xzh.weixin.web.common;
 import java.io.Serializable;
 
 /**
- * @author wangwei18
+ * @author xuzh
  * 
  *         2014年7月2日 下午12:04:32
  */
