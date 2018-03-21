@@ -246,6 +246,11 @@ public class FileController {
                 os.write(buffer.array());
             }
             os.flush();
+            try {
+                resourceService.updateView(rid);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
