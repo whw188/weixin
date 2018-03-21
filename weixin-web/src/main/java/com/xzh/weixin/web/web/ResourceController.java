@@ -52,16 +52,19 @@ public class ResourceController {
 
             if (listResponseDTO.getCode() == ReturnCode.ACTIVE_SUCCESS.code()) {
                 ShelfModel attach = listResponseDTO.getAttach();
-                if (attach != null && attach.getAgree() != 1) {
-                    shelfService.updateAgree(uid, rid, 1);
+                if (attach != null) {
+                    if (attach.getAgree() != 1) {
+                        shelfService.updateAgree(uid, rid, 1);
+                        resourceService.updateAgree(rid);
+                    }
                 } else {
                     ShelfModel shelfModel = new ShelfModel();
                     shelfModel.setUid(uid);
                     shelfModel.setRid(rid);
                     shelfModel.setAgree(1);
                     shelfService.insert(shelfModel);
+                    resourceService.updateAgree(rid);
                 }
-                resourceService.updateAgree(rid);
                 responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
             }
         } catch (Exception e) {
@@ -112,16 +115,19 @@ public class ResourceController {
 
             if (listResponseDTO.getCode() == ReturnCode.ACTIVE_SUCCESS.code()) {
                 ShelfModel attach = listResponseDTO.getAttach();
-                if (attach != null && attach.getShelf() != 1) {
-                    shelfService.updateShelf(uid, rid, 1);
+                if (attach != null) {
+                    if (attach.getShelf() != 1) {
+                        shelfService.updateShelf(uid, rid, 1);
+                        resourceService.updateShelf(rid);
+                    }
                 } else {
                     ShelfModel shelfModel = new ShelfModel();
                     shelfModel.setUid(uid);
                     shelfModel.setRid(rid);
                     shelfModel.setShelf(1);
                     shelfService.insert(shelfModel);
+                    resourceService.updateShelf(rid);
                 }
-                resourceService.updateShelf(rid);
                 responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
             }
         } catch (Exception e) {
