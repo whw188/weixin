@@ -55,7 +55,6 @@ public class ResourceController {
                 if (attach != null) {
                     if (attach.getAgree() != 1) {
                         shelfService.updateAgree(uid, rid, 1);
-                        resourceService.updateAgree(rid);
                     }
                 } else {
                     ShelfModel shelfModel = new ShelfModel();
@@ -118,7 +117,6 @@ public class ResourceController {
                 if (attach != null) {
                     if (attach.getShelf() != 1) {
                         shelfService.updateShelf(uid, rid, 1);
-                        resourceService.updateShelf(rid);
                     }
                 } else {
                     ShelfModel shelfModel = new ShelfModel();
