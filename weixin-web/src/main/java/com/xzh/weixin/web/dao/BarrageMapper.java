@@ -17,11 +17,11 @@ public interface BarrageMapper {
 
 
     @Select({
-            "select * from shelf",
+            "select * from barrage",
             "where rid = #{rid,jdbcType=BIGINT} "
     })
     @Results({
-            @Result(column = "bid", property = "sid", jdbcType = JdbcType.BIGINT),
+            @Result(column = "bid", property = "bid", jdbcType = JdbcType.BIGINT),
             @Result(column = "uid", property = "uid", jdbcType = JdbcType.VARCHAR),
             @Result(column = "rid", property = "rid", jdbcType = JdbcType.BIGINT),
             @Result(column = "text", property = "text", jdbcType = JdbcType.VARCHAR),
