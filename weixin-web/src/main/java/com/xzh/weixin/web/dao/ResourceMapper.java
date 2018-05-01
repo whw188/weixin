@@ -93,7 +93,7 @@ public interface ResourceMapper {
 
     @Select({
             "select * from resource",
-            "where status = 1 and  author like  CONCAT('%','${author}','%' )  or title like  CONCAT('%','${title}','%' )  "
+            "where status = 1 and ( author like  CONCAT('%','${author}','%' )  or title like  CONCAT('%','${title}','%' ))  "
     })
     @Results({
             @Result(column = "rid", property = "rid", jdbcType = JdbcType.BIGINT),

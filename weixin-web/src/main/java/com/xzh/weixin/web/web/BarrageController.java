@@ -17,7 +17,7 @@ import java.util.List;
  */
 
 @Controller
-@RequestMapping("/shelf")
+@RequestMapping("/barrage")
 public class BarrageController {
 
     @Resource
@@ -25,8 +25,8 @@ public class BarrageController {
 
 
     @ResponseBody
-    @RequestMapping(value = "/selectBarrageByRid", method = {RequestMethod.GET, RequestMethod.POST})
-    public ResponseDTO<List<BarrageModel>> selectByUid(Long rid) {
+    @RequestMapping(value = "/selectByRid", method = {RequestMethod.GET, RequestMethod.POST})
+    public ResponseDTO<List<BarrageModel>> selectByRid(Long rid) {
 
         ResponseDTO<List<BarrageModel>> responseDTO = barrageService.selectByUid(rid);
         return responseDTO;
