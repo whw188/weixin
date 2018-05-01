@@ -19,7 +19,7 @@ import java.util.Map;
 
 /**
  * @author xuzh
- * @version  2018年3月21日19:59:16
+ * @version 2018年3月21日19:59:16
  */
 
 @Controller
@@ -68,7 +68,7 @@ public class ShelfController {
             List<Object> objects = new ArrayList<>();
 
             for (ShelfModel shelfModel : responseDTO.getAttach()) {
-                if (shelfModel.getShelf() > 0) {
+                if (shelfModel.getShelf() != null && shelfModel.getShelf() > 0) {
 
                     ResponseDTO<ResourceModel> resourceModelResponseDTO = resourceService.selectById(shelfModel.getRid());
 

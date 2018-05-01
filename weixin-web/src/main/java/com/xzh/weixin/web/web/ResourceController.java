@@ -53,9 +53,10 @@ public class ResourceController {
             if (listResponseDTO.getCode() == ReturnCode.ACTIVE_SUCCESS.code()) {
                 ShelfModel attach = listResponseDTO.getAttach();
                 if (attach != null) {
-                    if (attach.getAgree() != 1) {
-                        shelfService.updateAgree(uid, rid, 1);
+                    if (attach.getAgree() == null) {
+                        resourceService.updateAgree(rid);
                     }
+                    shelfService.updateAgree(uid, rid, 1);
                 } else {
                     ShelfModel shelfModel = new ShelfModel();
                     shelfModel.setUid(uid);
@@ -115,10 +116,10 @@ public class ResourceController {
             if (listResponseDTO.getCode() == ReturnCode.ACTIVE_SUCCESS.code()) {
                 ShelfModel attach = listResponseDTO.getAttach();
                 if (attach != null) {
-
-                    if (attach.getShelf() == null || attach.getShelf() != 1) {
-                        shelfService.updateShelf(uid, rid, 1);
+                    if (attach.getShelf() == null) {
+                        resourceService.updateShelf(rid);
                     }
+                    shelfService.updateShelf(uid, rid, 1);
                 } else {
                     ShelfModel shelfModel = new ShelfModel();
                     shelfModel.setUid(uid);
