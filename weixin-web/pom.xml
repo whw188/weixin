@@ -206,6 +206,7 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
+            <!--此处可删除，同时需要删除assembly  第一个 fileset  -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
