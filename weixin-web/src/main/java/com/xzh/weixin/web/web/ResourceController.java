@@ -19,7 +19,7 @@ import java.util.Map;
 
 /**
  * @author xuzh
- * @version  2018年3月21日19:59:16
+ * @version 2018年3月21日19:59:16
  */
 
 @Controller
@@ -115,7 +115,8 @@ public class ResourceController {
             if (listResponseDTO.getCode() == ReturnCode.ACTIVE_SUCCESS.code()) {
                 ShelfModel attach = listResponseDTO.getAttach();
                 if (attach != null) {
-                    if (attach.getShelf() != 1) {
+
+                    if (attach.getShelf() == null || attach.getShelf() != 1) {
                         shelfService.updateShelf(uid, rid, 1);
                     }
                 } else {
