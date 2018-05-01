@@ -3,14 +3,11 @@ package com.xzh.weixin.web.service;
 import com.xzh.weixin.web.common.ResponseDTO;
 import com.xzh.weixin.web.common.ReturnCode;
 import com.xzh.weixin.web.dao.BarrageMapper;
-import com.xzh.weixin.web.dao.ShelfMapper;
 import com.xzh.weixin.web.dao.model.BarrageModel;
-import com.xzh.weixin.web.dao.model.ShelfModel;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.prefs.BackingStoreException;
 
 /**
  * Created by xuzh on 2018/2/27 20:14.

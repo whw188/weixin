@@ -18,4 +18,8 @@
     <bean id="resourceMapper" parent="baseMapper">
         <property name="mapperInterface" value="com.xzh.weixin.web.dao.ResourceMapper"/>
     </bean>
+
+    <bean id="barrageMapper" parent="baseMapper">
+        <property name="mapperInterface" value="com.xzh.weixin.web.dao.BarrageMapper"/>
+    </bean>
 </beans>
