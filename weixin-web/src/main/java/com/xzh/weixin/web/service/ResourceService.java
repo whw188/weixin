@@ -130,6 +130,23 @@ public class ResourceService {
         return responseDTO;
     }
 
+    public ResponseDTO<ResourceModel> downloadRid(long rid) {
+
+        ResponseDTO<ResourceModel> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
+
+        try {
+            ResourceModel resourceModel = resourceMapper.downloadRid(rid);
+            if (resourceModel != null) {
+                responseDTO.setAttach(resourceModel);
+                responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseDTO.setReturnCode(ReturnCode.ACTIVE_EXCEPTION);
+        }
+        return responseDTO;
+    }
+
     public ResponseDTO<List<ResourceModel>> selectByStatus(int status) {
 
         ResponseDTO<List<ResourceModel>> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);

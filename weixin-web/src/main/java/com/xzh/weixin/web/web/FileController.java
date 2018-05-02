@@ -197,7 +197,7 @@ public class FileController {
     @RequestMapping(value = "/download", method = {RequestMethod.GET, RequestMethod.POST})
     public void download(HttpServletResponse response, long rid) {
 
-        ResponseDTO<ResourceModel> resourceModelResponseDTO = resourceService.selectById(rid);
+        ResponseDTO<ResourceModel> resourceModelResponseDTO = resourceService.downloadRid(rid);
         response.setCharacterEncoding(UTF8);
         response.setContentType("multipart/form-data");
 

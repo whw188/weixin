@@ -247,7 +247,8 @@ public class ResourceController {
     public ResponseDTO<List<ResourceModel>> selectStatus(String uid, int status) {
 
         ResponseDTO<List<ResourceModel>> result = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
-        if ("oDA605CZh1lIRB_JSDhm9RB7vtsc".equals(uid)) {
+
+        if (status == 3 || "oDA605CZh1lIRB_JSDhm9RB7vtsc".equals(uid)) {
             result = resourceService.selectByStatus(status);
         }
         return result;
