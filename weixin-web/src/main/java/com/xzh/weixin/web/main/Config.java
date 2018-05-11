@@ -3,9 +3,6 @@ package com.xzh.weixin.web.main;
 import java.io.InputStream;
 import java.util.Properties;
 
-/**
- * Created by bingquan.an@fengjr.com on 2015/07/03.
- */
 public class Config {
 
 	private static Properties props = new Properties();
