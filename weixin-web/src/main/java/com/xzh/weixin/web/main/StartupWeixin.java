@@ -1,14 +1,14 @@
 package com.xzh.weixin.web.main;
 
-public class StartupSauronWarning extends AbstractServer {
+public class StartupWeixin extends AbstractServer {
 
-    public StartupSauronWarning(String[] anArgs) {
+    public StartupWeixin(String[] anArgs) {
         super(anArgs);
     }
 
     public static void main(String... anArgs) throws Exception {
         try {
-            new StartupSauronWarning(anArgs).run();
+            new StartupWeixin(anArgs).run();
         } catch (Exception e) {
             e.printStackTrace();
         }
