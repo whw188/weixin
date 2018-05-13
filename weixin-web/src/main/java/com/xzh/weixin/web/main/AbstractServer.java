@@ -2,19 +2,16 @@ package com.xzh.weixin.web.main;
 
 
 import java.io.File;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.jetty.server.Connector;
-import org.eclipse.jetty.server.Handler;
-import org.eclipse.jetty.server.NCSARequestLog;
-import org.eclipse.jetty.server.RequestLog;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.RequestLogHandler;
+import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.eclipse.jetty.util.thread.ThreadPool;
 import org.eclipse.jetty.webapp.WebAppContext;
@@ -50,7 +47,30 @@ public abstract class AbstractServer {
 
         System.setProperty("DEBUT", "false");
         server = new Server();
-        ServerConnector connector = new ServerConnector(server);
+
+
+        HttpConfiguration https_config = new HttpConfiguration();
+        https_config.setSecureScheme("https");
+
+        SslContextFactory sslContextFactory = new SslContextFactory();
+
+        String path = Thread.currentThread().getContextClassLoader().getResource("1527802843730.keystore").getPath();
+
+
+        String property = System.getProperty("user.dir");
+
+        path = property + "\\1527802843730.keystore";
+
+        sslContextFactory.setKeyStorePath(path);
+        // 私钥
+        sslContextFactory.setKeyStorePassword("1527802843730");
+        // 公钥
+        sslContextFactory.setKeyManagerPassword("1527802843730");
+
+
+        ServerConnector connector = new ServerConnector(server,
+                new SslConnectionFactory(sslContextFactory, "http/1.1"),
+                new HttpConnectionFactory(https_config));
         connector.setPort(config.port);
         connector.setIdleTimeout(config.idle_timeout);
         connector.setAcceptQueueSize(config.accecp_queuesize);

@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Class-Path: javax.el-3.0.0.jar mysql-connector-java-5.1.25.jar spring-
+ test-4.1.6.RELEASE.jar spring-orm-4.1.6.RELEASE.jar jetty-continuatio
+ n-9.2.16.v20160414.jar spring-webmvc-4.1.6.RELEASE.jar jetty-servlets
+ -9.2.16.v20160414.jar javax.servlet.jsp.jstl-1.2.2.jar slf4j-api-1.7.
+ 12.jar spring-aspects-4.1.6.RELEASE.jar aspectjweaver-1.8.5.jar org.e
+ clipse.jdt.core-3.8.2.v20130121.jar javax.ws.rs-api-2.0.jar jetty-ser
+ ver-9.2.16.v20160414.jar jetty-io-9.2.16.v20160414.jar spring-context
+ -4.1.6.RELEASE.jar jackson-databind-2.6.2.jar jetty-schemas-3.1.M0.ja
+ r c3p0-0.9.1.2.jar spring-tx-4.1.6.RELEASE.jar mybatis-spring-1.2.2.j
+ ar fastjson-1.1.31.jar jetty-servlet-9.2.16.v20160414.jar commons-io-
+ 2.5.jar javax.servlet-api-3.1.0.jar jetty-webapp-9.2.16.v20160414.jar
+  javax.servlet.jsp.jstl-1.2.0.v201105211821.jar javax.servlet.jsp-api
+ -2.3.1.jar javax.servlet.jsp-2.3.2.jar jetty-jsp-9.2.16.v20160414.jar
+  commons-fileupload-1.3.3.jar spring-expression-4.1.6.RELEASE.jar com
+ mons-logging-1.2.jar logback-classic-1.1.3.jar jetty-util-9.2.16.v201
+ 60414.jar logback-core-1.1.3.jar jetty-http-9.2.16.v20160414.jar spri
+ ng-context-support-4.1.6.RELEASE.jar commons-lang3-3.4.jar spring-jdb
+ c-4.1.6.RELEASE.jar jetty-security-9.2.16.v20160414.jar spring-core-4
+ .1.6.RELEASE.jar jackson-annotations-2.6.2.jar jackson-core-2.6.2.jar
+  spring-web-4.1.6.RELEASE.jar mybatis-3.2.8.jar jetty-xml-9.2.16.v201
+ 60414.jar aopalliance-1.0.jar spring-aop-4.1.6.RELEASE.jar spring-bea
+ ns-4.1.6.RELEASE.jar
+Main-Class: com.xzh.weixin.web.main.StartupWeixin
+
