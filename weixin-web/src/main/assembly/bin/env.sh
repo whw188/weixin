@@ -1,6 +1,6 @@
 APP="weixin-web"
 #需要启动的Java主程序（main方法类）
-APP_MAINCLASS=com.xzh.weixin.web.main.StartupSauronWarning
+APP_MAINCLASS=com.xzh.weixin.web.main.StartupWeixin
 
 LOG_BASE="/export/log"
 LOG_DIR="$LOG_BASE/$APP"

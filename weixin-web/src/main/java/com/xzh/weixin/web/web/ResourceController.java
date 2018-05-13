@@ -216,17 +216,17 @@ public class ResourceController {
 
     @ResponseBody
     @RequestMapping(value = "/selectByTitleOrAuthor", method = {RequestMethod.GET, RequestMethod.POST})
-    public ResponseDTO<List<ResourceModel>> selectByTitleOrAuthor(String keyWord) {
+    public ResponseDTO<List<ResourceModel>> selectByTitleOrAuthor(String keyWord, String uid) {
 
-        ResponseDTO<List<ResourceModel>> responseDTO = resourceService.selectByTitleOrAuthor(keyWord);
+        ResponseDTO<List<ResourceModel>> responseDTO = resourceService.selectByTitleOrAuthor(keyWord, uid);
         return responseDTO;
     }
 
     @ResponseBody
     @RequestMapping(value = "/selectByTitleAndCid", method = {RequestMethod.GET, RequestMethod.POST})
-    public ResponseDTO<List<ResourceModel>> selectByTitleAndCid(String keyWord, long cid) {
+    public ResponseDTO<List<ResourceModel>> selectByTitleAndCid(String keyWord, String uid, long cid) {
 
-        ResponseDTO<List<ResourceModel>> responseDTO = resourceService.selectByTitleAndCid(keyWord, cid);
+        ResponseDTO<List<ResourceModel>> responseDTO = resourceService.selectByTitleAndCid(keyWord, uid, cid);
         return responseDTO;
     }
 

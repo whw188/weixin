@@ -22,4 +22,7 @@
     <bean id="barrageMapper" parent="baseMapper">
         <property name="mapperInterface" value="com.xzh.weixin.web.dao.BarrageMapper"/>
     </bean>
+    <bean id="recommondMapper" parent="baseMapper">
+        <property name="mapperInterface" value="com.xzh.weixin.web.dao.RecommondMapper"/>
+    </bean>
 </beans>
