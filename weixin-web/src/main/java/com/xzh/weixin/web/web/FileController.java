@@ -1,5 +1,6 @@
 package com.xzh.weixin.web.web;
 
+import com.alibaba.fastjson.JSON;
 import com.xzh.weixin.web.common.ResponseDTO;
 import com.xzh.weixin.web.common.ReturnCode;
 import com.xzh.weixin.web.dao.model.ResourceModel;
@@ -35,7 +36,7 @@ import java.util.UUID;
 
 /**
  * @author xuzh
- * @version  2018年3月21日19:59:16
+ * @version 2018年3月21日19:59:16
  */
 
 @Controller
@@ -103,6 +104,17 @@ public class FileController {
             String type = params.get("type");
             String author = params.get("author");
             String summary = params.get("summary");
+
+            String s = JSON.toJSONString(params);
+            logger.info("params   :" + s);
+
+            if (files.size() > 0) {
+                FileItem fileItem = files.get(0);
+                logger.info("file params  name = :{},size = {}", fileItem.getFieldName(), fileItem.getSize());
+            } else {
+                logger.info("file params  no exists ");
+            }
+
             if (StringUtils.isBlank(uid) ||
                     StringUtils.isBlank(title) ||
                     StringUtils.isBlank(type) ||
