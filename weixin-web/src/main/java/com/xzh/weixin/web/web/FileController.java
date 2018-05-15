@@ -26,6 +26,7 @@ import javax.ws.rs.QueryParam;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
@@ -209,6 +210,7 @@ public class FileController {
     @RequestMapping(value = "/download", method = {RequestMethod.GET, RequestMethod.POST})
     public void download(HttpServletResponse response, long rid) {
 
+
         ResponseDTO<ResourceModel> resourceModelResponseDTO = resourceService.downloadRid(rid);
         response.setCharacterEncoding(UTF8);
         response.setContentType("multipart/form-data");
@@ -248,6 +250,7 @@ public class FileController {
             os = response.getOutputStream();
 
             ByteBuffer buffer = ByteBuffer.allocate(1024 * 1024);
+            logger.info(path + File.separator + fileId + " download开始");
             while (true) {
                 buffer.clear();
                 int len = readChannel.read(buffer);
@@ -260,11 +263,13 @@ public class FileController {
             os.flush();
             try {
                 resourceService.updateView(rid);
+                logger.info(path + File.separator + fileId + " download结束，更新view 结束");
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error("download ", e);
         } finally {
             if (os != null) {
                 try {
@@ -280,6 +285,44 @@ public class FileController {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/downloadPage", method = {RequestMethod.GET, RequestMethod.POST})
+    public void downloadPage(HttpServletResponse response, long rid) {
+
+
+        PrintWriter writer = null;
+
+        try {
+            //设置响应头，控制浏览器下载该文件
+            writer = response.getWriter();
+
+            writer.println("<html>");
+            writer.println("<head>");
+            writer.println("<meta name=\"viewport\" content=\"width=device-width\">");
+            writer.println("</head>");
+            writer.println("<body>");
+            writer.println("<video controls=\"\" autoplay=\"\" name=\"media\">");
+            writer.println("<source src=\"https://gxskx.cn/file/download?rid=" + rid + "\" type=\"video/mp4\">");
+            writer.println("</video>");
+            writer.println("</body>");
+            writer.println("</html>");
+            writer.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("download ", e);
+        } finally {
+            if (writer != null) {
+                try {
+                    writer.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
         }
     }
 
