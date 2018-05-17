@@ -31,4 +31,7 @@
     <bean id="userSignMapper" parent="baseMapper">
         <property name="mapperInterface" value="com.xzh.weixin.web.dao.UserSignMapper"/>
     </bean>
+    <bean id="commentMapper" parent="baseMapper">
+        <property name="mapperInterface" value="com.xzh.weixin.web.dao.CommentMapper"/>
+    </bean>
 </beans>

@@ -2,9 +2,7 @@ package com.xzh.weixin.web.service;
 
 import com.xzh.weixin.web.common.ResponseDTO;
 import com.xzh.weixin.web.common.ReturnCode;
-import com.xzh.weixin.web.dao.ShelfMapper;
 import com.xzh.weixin.web.dao.UserMapper;
-import com.xzh.weixin.web.dao.model.ShelfModel;
 import com.xzh.weixin.web.dao.model.UserModel;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +15,6 @@ import java.util.List;
 @Service
 public class UserService {
 
-    @Resource
-    ShelfMapper shelfMapper;
 
     @Resource
     UserMapper userMapper;

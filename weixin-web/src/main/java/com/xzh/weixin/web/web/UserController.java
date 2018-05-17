@@ -3,7 +3,9 @@ package com.xzh.weixin.web.web;
 import com.alibaba.fastjson.JSONObject;
 import com.xzh.weixin.web.common.ResponseDTO;
 import com.xzh.weixin.web.common.ReturnCode;
+import com.xzh.weixin.web.dao.model.ResourceModel;
 import com.xzh.weixin.web.dao.model.UserModel;
+import com.xzh.weixin.web.service.ResourceService;
 import com.xzh.weixin.web.service.UserService;
 import com.xzh.weixin.web.utils.CommonUtils;
 import org.slf4j.Logger;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,6 +35,9 @@ public class UserController {
 
     @Resource
     UserService userService;
+
+    @Resource
+    ResourceService resourceService;
 
 
     @ResponseBody
@@ -94,4 +100,50 @@ public class UserController {
         }
         return responseDTO;
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/checkUserCoin", method = {RequestMethod.GET, RequestMethod.POST})
+    public ResponseDTO<Map<String, Object>> checkUserCoin(String uid, long rid) {
+
+        ResponseDTO<Map<String, Object>> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
+        try {
+
+
+            Map<String, Object> result = new HashMap<>();
+
+            result.put("status", "less");
+            result.put("rid", String.valueOf(rid));
+
+
+            ResponseDTO<List<UserModel>> listResponseDTO = userService.selectByUid(uid);
+
+            if (listResponseDTO.getCode() == ReturnCode.ACTIVE_SUCCESS.code()) {
+
+                List<UserModel> attach = listResponseDTO.getAttach();
+
+                UserModel userModel = attach.get(0);
+                Integer coin = userModel.getCoin();
+
+                ResponseDTO<ResourceModel> resourceModelResponseDTO = resourceService.selectById(rid);
+
+                if (resourceModelResponseDTO.getCode() == ReturnCode.ACTIVE_SUCCESS.code()) {
+
+                    ResourceModel attach1 = resourceModelResponseDTO.getAttach();
+
+                    Integer price = attach1.getPrice();
+                    result.put("price", price);
+
+                    if (coin > price) {
+                        result.put("status", "more");
+                    } else {
+                        result.put("status", "less");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            logger.error("insertOrUpdate error", e);
+        }
+        return responseDTO;
+    }
+
 }
