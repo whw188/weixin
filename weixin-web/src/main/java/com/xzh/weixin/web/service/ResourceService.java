@@ -235,6 +235,22 @@ public class ResourceService {
         return responseDTO;
     }
 
+
+    public ResponseDTO<List<ResourceModel>> selectByCidAndType(long cid, String type) {
+
+        ResponseDTO<List<ResourceModel>> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
+
+        try {
+            List<ResourceModel> resourceModels = resourceMapper.selectByCidAndType(cid, type);
+            responseDTO.setAttach(resourceModels);
+            responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseDTO.setReturnCode(ReturnCode.ACTIVE_EXCEPTION);
+        }
+        return responseDTO;
+    }
+
     public ResponseDTO<List<ResourceModel>> selectByTitleOrAuthor(String keyWord, String uid) {
 
         ResponseDTO<List<ResourceModel>> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);

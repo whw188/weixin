@@ -199,6 +199,14 @@ public class ResourceController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/selectByCidAndType", method = {RequestMethod.GET, RequestMethod.POST})
+    public ResponseDTO<List<ResourceModel>> selectByCidAndType(long cid, String type) {
+
+        ResponseDTO<List<ResourceModel>> responseDTO = resourceService.selectByCidAndType(cid, type);
+        return responseDTO;
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/selectByCid", method = {RequestMethod.GET, RequestMethod.POST})
     public ResponseDTO<List<ResourceModel>> selectByCid(long cid) {
 

@@ -33,8 +33,8 @@ public interface CommentMapper {
     List<CommentModel> selectByRid(@Param("rid") long rid);
 
     @Insert({
-            "insert into user (from_uid, to_uid, rid, content )",
-            "values (#{uid,jdbcType=VARCHAR}, #{nick,jdbcType=VARCHAR}, #{head,jdbcType=BIGINT}, #{coin,jdbcType=VARCHAR})"
+            "insert into comment (from_uid, to_uid, rid, content )",
+            "values (#{fromUid,jdbcType=VARCHAR}, #{toUid,jdbcType=VARCHAR}, #{rid,jdbcType=BIGINT}, #{content,jdbcType=VARCHAR})"
     })
     int insert(CommentModel commentModel);
 }

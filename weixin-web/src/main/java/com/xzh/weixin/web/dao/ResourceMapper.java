@@ -196,6 +196,32 @@ public interface ResourceMapper {
 
     @Select({
             "select * from resource",
+            "where status = 1 and cid = #{cid,jdbcType=BIGINT} and type = #{type,jdbcType=VARCHAR}"
+    })
+    @Results({
+            @Result(column = "rid", property = "rid", jdbcType = JdbcType.BIGINT),
+            @Result(column = "file_id", property = "fileId", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "file_name", property = "fileName", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "uid", property = "uid", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "author", property = "author", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "title", property = "title", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "summary", property = "summary", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "type", property = "type", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "image_id", property = "imageId", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "cid", property = "cid", jdbcType = JdbcType.BIGINT),
+            @Result(column = "price", property = "price", jdbcType = JdbcType.INTEGER),
+            @Result(column = "view_count", property = "viewCount", jdbcType = JdbcType.INTEGER),
+            @Result(column = "agree_count", property = "agreeCount", jdbcType = JdbcType.INTEGER),
+            @Result(column = "shelf_count", property = "shelfCount", jdbcType = JdbcType.INTEGER),
+            @Result(column = "create_time", property = "createTime", jdbcType = JdbcType.TIMESTAMP),
+            @Result(column = "update_time", property = "updateTime", jdbcType = JdbcType.TIMESTAMP),
+            @Result(column = "status", property = "status", jdbcType = JdbcType.INTEGER),
+    })
+    List<ResourceModel> selectByCidAndType(@Param("cid") long cid,@Param("type") String type);
+
+
+    @Select({
+            "select * from resource",
             "where status = 1 and cid = #{cid,jdbcType=BIGINT} "
     })
     @Results({
