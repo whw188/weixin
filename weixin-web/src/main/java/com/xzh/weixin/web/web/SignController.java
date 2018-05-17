@@ -23,16 +23,14 @@ import java.util.Map;
  */
 
 @Controller
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/sign")
+public class SignController {
 
 
-    private final static Logger logger = LoggerFactory.getLogger(UserController.class);
-
+    private final static Logger logger = LoggerFactory.getLogger(SignController.class);
 
     @Resource
     UserService userService;
-
 
     @ResponseBody
     @RequestMapping(value = "/getUid", method = {RequestMethod.GET, RequestMethod.POST})
@@ -94,4 +92,6 @@ public class UserController {
         }
         return responseDTO;
     }
+
+
 }

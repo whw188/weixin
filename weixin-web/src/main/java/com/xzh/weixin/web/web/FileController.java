@@ -5,6 +5,7 @@ import com.xzh.weixin.web.common.ResponseDTO;
 import com.xzh.weixin.web.common.ReturnCode;
 import com.xzh.weixin.web.dao.model.ResourceModel;
 import com.xzh.weixin.web.service.ResourceService;
+import com.xzh.weixin.web.utils.CommonUtils;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadBase;
 import org.apache.commons.fileupload.FileUploadException;
@@ -74,7 +75,7 @@ public class FileController {
 
     @ResponseBody
     @RequestMapping(value = "/upload", method = {RequestMethod.GET, RequestMethod.POST})
-    public ResponseDTO<String> upload(HttpServletRequest request, @QueryParam(value = "userName") String userName) {
+    public ResponseDTO<String> upload(HttpServletRequest request) {
 
         ResponseDTO<String> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
         List<FileItem> list = null;
@@ -105,6 +106,7 @@ public class FileController {
             String type = params.get("type");
             String author = params.get("author");
             String summary = params.get("summary");
+            String price = params.get("price");
 
             String s = JSON.toJSONString(params);
             logger.info("params   :" + s);
@@ -142,6 +144,10 @@ public class FileController {
             resourceModel.setType(type);
             resourceModel.setCid(categoryId);
 
+            if (StringUtils.isNotBlank(price)) {
+                resourceModel.setPrice(Integer.valueOf(price));
+            }
+
             String saveFileId = null;
             File file = null;
             String savePathStr = null;
@@ -154,7 +160,7 @@ public class FileController {
                     //得到文件保存的名称
                     String fileId = UUID.randomUUID().toString();
                     //得到文件保存的路径
-                    savePathStr = mkFilePath(BASE_DIR, fileId);
+                    savePathStr = CommonUtils.mkFilePath(BASE_DIR, fileId);
 
                     logger.info("保存路径为:" + savePathStr);
                     file = new File(savePathStr + File.separator + fileId);
@@ -233,7 +239,7 @@ public class FileController {
         OutputStream os = null;
         FileInputStream in = null;
         try {
-            String path = mkFilePath(BASE_DIR, fileId);
+            String path = CommonUtils.mkFilePath(BASE_DIR, fileId);
             File file = new File(path + File.separator + fileId);
 
             if (!file.exists()) {
@@ -353,18 +359,5 @@ public class FileController {
         return fileUpload;
     }
 
-    private String mkFilePath(String savePath, String fileName) {
-        //得到文件名的hashCode的值，得到的就是filename这个字符串对象在内存中的地址
-        int hashcode = fileName.hashCode();
-        int dir1 = hashcode & 0xf;
-        int dir2 = (hashcode & 0xf0) >> 4;
-        //构造新的保存目录
-        String dir = savePath + dir1 + "/" + dir2;
-        //File既可以代表文件也可以代表目录
-        File file = new File(dir);
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        return dir;
-    }
+
 }

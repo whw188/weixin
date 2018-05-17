@@ -36,6 +36,18 @@ public class DateUtils {
         return w;
     }
 
+    public static boolean isToday(Date date) {
+
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+        if (fmt.format(date).toString().equals(fmt.format(new Date()).toString())) {
+            return true;
+        } else {
+            return false;
+        }
+
+
+    }
+
     public static long getServerTime() {
         return System.currentTimeMillis();
     }

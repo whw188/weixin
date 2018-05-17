@@ -17,12 +17,22 @@ public class ResourceModel {
     private String type;
     private String imageId;
     private Long cid;
+    private Integer price;
     private Integer viewCount;
     private Integer agreeCount;
     private Integer shelfCount;
     private Date createTime;
     private Date updateTime;
     private Integer status;
+
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
 
     public Long getRid() {
         return rid;

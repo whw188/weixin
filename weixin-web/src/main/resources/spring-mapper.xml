@@ -25,4 +25,10 @@
     <bean id="recommondMapper" parent="baseMapper">
         <property name="mapperInterface" value="com.xzh.weixin.web.dao.RecommondMapper"/>
     </bean>
+    <bean id="userMapper" parent="baseMapper">
+        <property name="mapperInterface" value="com.xzh.weixin.web.dao.UserMapper"/>
+    </bean>
+    <bean id="userSignMapper" parent="baseMapper">
+        <property name="mapperInterface" value="com.xzh.weixin.web.dao.UserSignMapper"/>
+    </bean>
 </beans>
