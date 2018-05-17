@@ -34,4 +34,7 @@
     <bean id="commentMapper" parent="baseMapper">
         <property name="mapperInterface" value="com.xzh.weixin.web.dao.CommentMapper"/>
     </bean>
+    <bean id="orderMapper" parent="baseMapper">
+        <property name="mapperInterface" value="com.xzh.weixin.web.dao.OrderMapper"/>
+    </bean>
 </beans>
