@@ -143,6 +143,7 @@ public class FileController {
             resourceModel.setAuthor(author);
             resourceModel.setType(type);
             resourceModel.setCid(categoryId);
+            resourceModel.setStatus(0);
 
             if (StringUtils.isNotBlank(price)) {
                 resourceModel.setPrice(Integer.valueOf(price));

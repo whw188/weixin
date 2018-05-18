@@ -56,9 +56,8 @@ public class CommentController {
                     String fromNick = "";
                     String fromHead = "";
                     try {
-                        ResponseDTO<List<UserModel>> listResponseDTO1 = userService.selectByUid(commentModel.getFromUid());
-                        List<UserModel> attach1 = listResponseDTO1.getAttach();
-                        UserModel userModel = attach1.get(0);
+                        ResponseDTO<UserModel> listResponseDTO1 = userService.selectByUid(commentModel.getToUid());
+                        UserModel userModel = listResponseDTO1.getAttach();
                         fromNick = userModel.getNick();
                         fromHead = userModel.getHead();
                     } catch (Exception e) {
@@ -71,9 +70,8 @@ public class CommentController {
                     String toNick = "";
                     String toHead = "";
                     try {
-                        ResponseDTO<List<UserModel>> listResponseDTO1 = userService.selectByUid(commentModel.getToUid());
-                        List<UserModel> attach1 = listResponseDTO1.getAttach();
-                        UserModel userModel = attach1.get(0);
+                        ResponseDTO<UserModel> listResponseDTO1 = userService.selectByUid(commentModel.getToUid());
+                        UserModel userModel = listResponseDTO1.getAttach();
                         toNick = userModel.getNick();
                         toHead = userModel.getHead();
                     } catch (Exception e) {

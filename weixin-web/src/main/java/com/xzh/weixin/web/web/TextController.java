@@ -76,6 +76,13 @@ public class TextController {
             resourceModel.setCid(categoryId);
             resourceModel.setPrice(price);
 
+            if ("ask".equals(type)) {
+                resourceModel.setStatus(1);
+            } else {
+                resourceModel.setStatus(0);
+            }
+
+
             File file = null;
             String savePathStr = null;
             String fileId = UUID.randomUUID().toString();

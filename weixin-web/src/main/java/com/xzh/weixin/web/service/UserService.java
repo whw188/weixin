@@ -65,12 +65,12 @@ public class UserService {
     }
 
 
-    public ResponseDTO<List<UserModel>> selectByUid(String uid) {
+    public ResponseDTO<UserModel> selectByUid(String uid) {
 
-        ResponseDTO<List<UserModel>> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
+        ResponseDTO<UserModel> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
 
         try {
-            List<UserModel> userModels = userMapper.selectByUid(uid);
+            UserModel userModels = userMapper.selectByUid(uid);
             responseDTO.setAttach(userModels);
             responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
         } catch (Exception e) {

@@ -119,6 +119,34 @@ public interface ResourceMapper {
     })
     List<ResourceModel> selectByStatus(@Param("status") int status);
 
+
+    @Select({
+            "select * from resource",
+            "where status = #{status,jdbcType=INTEGER} and type = #{type,jdbcType=VARCHAR}"
+    })
+    @Results({
+            @Result(column = "rid", property = "rid", jdbcType = JdbcType.BIGINT),
+            @Result(column = "file_id", property = "fileId", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "file_name", property = "fileName", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "uid", property = "uid", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "author", property = "author", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "title", property = "title", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "summary", property = "summary", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "type", property = "type", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "image_id", property = "imageId", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "cid", property = "cid", jdbcType = JdbcType.BIGINT),
+            @Result(column = "price", property = "price", jdbcType = JdbcType.INTEGER),
+            @Result(column = "view_count", property = "viewCount", jdbcType = JdbcType.INTEGER),
+            @Result(column = "agree_count", property = "agreeCount", jdbcType = JdbcType.INTEGER),
+            @Result(column = "shelf_count", property = "shelfCount", jdbcType = JdbcType.INTEGER),
+            @Result(column = "create_time", property = "createTime", jdbcType = JdbcType.TIMESTAMP),
+            @Result(column = "update_time", property = "updateTime", jdbcType = JdbcType.TIMESTAMP),
+            @Result(column = "status", property = "status", jdbcType = JdbcType.INTEGER),
+    })
+    List<ResourceModel> selectByStatusAndType(@Param("status") int status,@Param("type") String type);
+
+
+
     @Select({
             "select * from resource",
             "where status = 1 and ( author like  CONCAT('%','${author}','%' )  or title like  CONCAT('%','${title}','%' ))  "
@@ -246,8 +274,8 @@ public interface ResourceMapper {
     List<ResourceModel> selectByCid(@Param("cid") long cid);
 
     @Insert({
-            "insert into resource (file_id, file_name, uid, author, title, summary, type, image_id, cid, price)",
-            "values (#{fileId,jdbcType=VARCHAR},  #{fileName,jdbcType=VARCHAR}, #{uid,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{imageId,jdbcType=VARCHAR}, #{cid,jdbcType=BIGINT}, #{price,jdbcType=INTEGER} )"
+            "insert into resource (file_id, file_name, uid, author, title, summary, type, image_id, cid, price ,status)",
+            "values (#{fileId,jdbcType=VARCHAR},  #{fileName,jdbcType=VARCHAR}, #{uid,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{imageId,jdbcType=VARCHAR}, #{cid,jdbcType=BIGINT}, #{price,jdbcType=INTEGER}, #{status,jdbcType=INTEGER} )"
     })
     int insert(ResourceModel resourceModel);
 

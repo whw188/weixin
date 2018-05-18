@@ -220,6 +220,24 @@ public class ResourceService {
         return responseDTO;
     }
 
+    public ResponseDTO<List<ResourceModel>> selectByStatusAndType(int status, String type) {
+
+        ResponseDTO<List<ResourceModel>> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
+
+        try {
+            List<ResourceModel> resourceModel = resourceMapper.selectByStatusAndType(status, type);
+            if (resourceModel == null) {
+                resourceModel = new ArrayList<>();
+            }
+            responseDTO.setAttach(resourceModel);
+            responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseDTO.setReturnCode(ReturnCode.ACTIVE_EXCEPTION);
+        }
+        return responseDTO;
+    }
+
     public ResponseDTO<List<ResourceModel>> selectByCid(long cid) {
 
         ResponseDTO<List<ResourceModel>> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);

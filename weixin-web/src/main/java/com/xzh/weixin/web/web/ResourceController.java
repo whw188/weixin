@@ -262,4 +262,16 @@ public class ResourceController {
         return result;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/selectStatusAndType", method = {RequestMethod.GET, RequestMethod.POST})
+    public ResponseDTO<List<ResourceModel>> selectStatusAndType(String uid, int status, String type) {
+
+        ResponseDTO<List<ResourceModel>> result = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
+
+        if (status == 3 || "oDA605CZh1lIRB_JSDhm9RB7vtsc".equals(uid)) {
+            result = resourceService.selectByStatusAndType(status, type);
+        }
+        return result;
+    }
+
 }

@@ -6,10 +6,13 @@ import com.xzh.weixin.web.common.ReturnCode;
 import com.xzh.weixin.web.dao.model.OrderModel;
 import com.xzh.weixin.web.dao.model.ResourceModel;
 import com.xzh.weixin.web.dao.model.UserModel;
+import com.xzh.weixin.web.dao.model.UserSignModel;
 import com.xzh.weixin.web.service.OrderService;
 import com.xzh.weixin.web.service.ResourceService;
 import com.xzh.weixin.web.service.UserService;
+import com.xzh.weixin.web.service.UserSignService;
 import com.xzh.weixin.web.utils.CommonUtils;
+import com.xzh.weixin.web.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -43,6 +46,9 @@ public class UserController {
 
     @Resource
     OrderService orderService;
+
+    @Resource
+    UserSignService userSignService;
 
 
     @ResponseBody
@@ -86,14 +92,30 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping(value = "/getUserInfo", method = {RequestMethod.GET, RequestMethod.POST})
-    public ResponseDTO<List<UserModel>> getUserInfo(String uid) {
+    public ResponseDTO<UserModel> getUserInfo(String uid) {
 
-        ResponseDTO<List<UserModel>> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
+        ResponseDTO<UserModel> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
         try {
-            ResponseDTO<List<UserModel>> listResponseDTO = userService.selectByUid(uid);
+            ResponseDTO<UserModel> listResponseDTO = userService.selectByUid(uid);
 
+            if (listResponseDTO.getCode() == ReturnCode.ACTIVE_SUCCESS.code()) {
+
+                ResponseDTO<List<UserSignModel>> signs = userSignService.selectByUid(uid);
+                if (signs.getCode() == ReturnCode.ACTIVE_SUCCESS.code()) {
+
+                    List<UserSignModel> attach = signs.getAttach();
+                    UserModel userModel = listResponseDTO.getAttach();
+
+                    if (userModel != null) {
+                        if (attach == null || attach.size() == 0 || !DateUtils.isToday(attach.get(0).getCreateTime())) {
+                            userModel.setSignStatus(1);
+                        } else {
+                            userModel.setSignStatus(0);
+                        }
+                    }
+                }
+            }
             return listResponseDTO;
-
         } catch (Exception e) {
             logger.error("insertOrUpdate error", e);
         }
@@ -132,13 +154,12 @@ public class UserController {
         try {
 
 
-            ResponseDTO<List<UserModel>> listResponseDTO = userService.selectByUid(uid);
+            ResponseDTO<UserModel> listResponseDTO = userService.selectByUid(uid);
 
             if (listResponseDTO.getCode() == ReturnCode.ACTIVE_SUCCESS.code()) {
 
-                List<UserModel> attach = listResponseDTO.getAttach();
+                UserModel userModel = listResponseDTO.getAttach();
 
-                UserModel userModel = attach.get(0);
                 Integer coin = userModel.getCoin();
 
                 ResponseDTO<ResourceModel> resourceModelResponseDTO = resourceService.selectById(rid);
@@ -205,13 +226,12 @@ public class UserController {
             }
 
 
-            ResponseDTO<List<UserModel>> listResponseDTO = userService.selectByUid(uid);
+            ResponseDTO<UserModel> listResponseDTO = userService.selectByUid(uid);
 
             if (listResponseDTO.getCode() == ReturnCode.ACTIVE_SUCCESS.code()) {
 
-                List<UserModel> attach = listResponseDTO.getAttach();
+                UserModel userModel = listResponseDTO.getAttach();
 
-                UserModel userModel = attach.get(0);
                 Integer coin = userModel.getCoin();
 
                 ResponseDTO<ResourceModel> resourceModelResponseDTO = resourceService.selectById(rid);

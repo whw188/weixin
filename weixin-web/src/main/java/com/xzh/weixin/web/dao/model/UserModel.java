@@ -15,6 +15,16 @@ public class UserModel {
     private Date updateTime;
     private Integer status;
 
+    private Integer signStatus = 0;
+
+    public Integer getSignStatus() {
+        return signStatus;
+    }
+
+    public void setSignStatus(Integer signStatus) {
+        this.signStatus = signStatus;
+    }
+
     public long getId() {
         return id;
     }

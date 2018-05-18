@@ -29,7 +29,7 @@ public interface UserMapper {
             @Result(column = "update_time", property = "updateTime", jdbcType = JdbcType.TIMESTAMP),
             @Result(column = "status", property = "status", jdbcType = JdbcType.INTEGER)
     })
-    List<UserModel> selectByUid(@Param("uid") String uid);
+    UserModel selectByUid(@Param("uid") String uid);
 
     @Insert({
             "insert into user (uid, nick, head, coin )",
