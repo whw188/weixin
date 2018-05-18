@@ -83,6 +83,24 @@ public class UserController {
         return responseDTO;
     }
 
+
+    @ResponseBody
+    @RequestMapping(value = "/getUserInfo", method = {RequestMethod.GET, RequestMethod.POST})
+    public ResponseDTO<List<UserModel>> getUserInfo(String uid) {
+
+        ResponseDTO<List<UserModel>> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
+        try {
+            ResponseDTO<List<UserModel>> listResponseDTO = userService.selectByUid(uid);
+
+            return listResponseDTO;
+
+        } catch (Exception e) {
+            logger.error("insertOrUpdate error", e);
+        }
+        return responseDTO;
+    }
+
+
     @ResponseBody
     @RequestMapping(value = "/insertOrUpdate", method = {RequestMethod.GET, RequestMethod.POST})
     public ResponseDTO<String> insertOrUpdate(String uid, String head, String nick) {
