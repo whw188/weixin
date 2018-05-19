@@ -5,6 +5,7 @@ import com.xzh.weixin.web.common.ResponseDTO;
 import com.xzh.weixin.web.common.ReturnCode;
 import com.xzh.weixin.web.dao.model.ResourceModel;
 import com.xzh.weixin.web.service.ResourceService;
+import com.xzh.weixin.web.service.UserService;
 import com.xzh.weixin.web.utils.CommonUtils;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadBase;
@@ -65,6 +66,8 @@ public class FileController {
         }
     }
 
+    @Resource
+    UserService userService;
     @Resource
     ResourceService resourceService;
 
@@ -183,6 +186,9 @@ public class FileController {
                 ResponseDTO insert = resourceService.insert(resourceModel);
 
                 if (insert.getCode() == ReturnCode.ACTIVE_SUCCESS.code()) {
+                    userService.addCoin(uid, 20);
+                    logger.info("奖励积分：" + 20);
+
                     responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
                     logger.info("上传成功:" + saveFileId);
                 } else {

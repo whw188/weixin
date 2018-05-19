@@ -104,18 +104,21 @@ public class CommentController {
                             Integer tread = attach1.getTread();
 
                             if (tread == null || tread.intValue() == 0) {
-                                map.put("isTread", true);
-                            } else {
                                 map.put("isTread", false);
+                            } else {
+                                map.put("isTread", true);
                             }
                             Integer agree = attach1.getAgree();
 
                             if (agree == null || agree.intValue() == 0) {
-                                map.put("isAgree", true);
-                            } else {
                                 map.put("isAgree", false);
+                            } else {
+                                map.put("isAgree", true);
                             }
                         }
+                    } else {
+                        map.put("isAgree", false);
+                        map.put("isTread", false);
                     }
                     result.add(map);
                 }
