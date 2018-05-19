@@ -50,7 +50,7 @@ public class UserSignController {
                     userSignModel.setUid(uid);
                     ResponseDTO<String> insert = userSignService.insert(userSignModel);
                     if (insert.getCode() == ReturnCode.ACTIVE_SUCCESS.code()) {
-                        userService.addCoin(uid, 2);
+                        userService.addCoin(uid, 1);
                         responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
                     } else {
                         return insert;

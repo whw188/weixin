@@ -56,7 +56,7 @@ public class CommentController {
                     String fromNick = "";
                     String fromHead = "";
                     try {
-                        ResponseDTO<UserModel> listResponseDTO1 = userService.selectByUid(commentModel.getToUid());
+                        ResponseDTO<UserModel> listResponseDTO1 = userService.selectByUid(commentModel.getFromUid());
                         UserModel userModel = listResponseDTO1.getAttach();
                         fromNick = userModel.getNick();
                         fromHead = userModel.getHead();
