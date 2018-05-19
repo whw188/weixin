@@ -111,8 +111,8 @@ public class TextController {
                     responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
                     logger.info("上传成功:" + file.getPath());
 
-                    userService.addCoin(uid, 20);
-                    logger.info("奖励积分：" + 20);
+                    userService.addCoin(uid, 5);
+                    logger.info("奖励积分：" + 5);
 
                 } else {
                     FileUtils.forceDelete(file);
