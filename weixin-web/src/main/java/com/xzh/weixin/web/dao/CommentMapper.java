@@ -16,6 +16,20 @@ import java.util.List;
 public interface CommentMapper {
 
 
+    @Update({
+            "update comment set",
+            "agree_count = agree_count + 1 ",
+            "where cmid = #{cmid,jdbcType=BIGINT} "
+    })
+    int updateAgree(@Param("cmid") long cmid);
+
+    @Update({
+            "update comment set",
+            "tread_count = tread_count + 1 ",
+            "where cmid = #{cmid,jdbcType=BIGINT} "
+    })
+    int updateTread(@Param("cmid") long cmid);
+
     @Select({
             "select * from comment",
             "where rid = #{rid,jdbcType=VARCHAR} order by create_time asc"
@@ -26,6 +40,8 @@ public interface CommentMapper {
             @Result(column = "to_uid", property = "toUid", jdbcType = JdbcType.VARCHAR),
             @Result(column = "rid", property = "rid", jdbcType = JdbcType.BIGINT),
             @Result(column = "content", property = "content", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "agree_count", property = "agreeCount", jdbcType = JdbcType.INTEGER),
+            @Result(column = "tread_count", property = "treadCount", jdbcType = JdbcType.INTEGER),
             @Result(column = "create_time", property = "createTime", jdbcType = JdbcType.TIMESTAMP),
             @Result(column = "update_time", property = "updateTime", jdbcType = JdbcType.TIMESTAMP),
             @Result(column = "status", property = "status", jdbcType = JdbcType.INTEGER)

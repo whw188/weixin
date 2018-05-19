@@ -10,11 +10,29 @@ public class CommentModel {
     private String toUid;
     private long rid;
     private String content;
+    private String agreeCount;
+    private String treadCount;
+
 
     private Date createTime;
     private Date updateTime;
     private Integer status;
 
+    public String getAgreeCount() {
+        return agreeCount;
+    }
+
+    public void setAgreeCount(String agreeCount) {
+        this.agreeCount = agreeCount;
+    }
+
+    public String getTreadCount() {
+        return treadCount;
+    }
+
+    public void setTreadCount(String treadCount) {
+        this.treadCount = treadCount;
+    }
 
     public long getCmid() {
         return cmid;

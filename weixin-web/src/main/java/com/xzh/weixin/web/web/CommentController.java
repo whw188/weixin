@@ -2,8 +2,10 @@ package com.xzh.weixin.web.web;
 
 import com.xzh.weixin.web.common.ResponseDTO;
 import com.xzh.weixin.web.common.ReturnCode;
+import com.xzh.weixin.web.dao.model.CommentAgreeModel;
 import com.xzh.weixin.web.dao.model.CommentModel;
 import com.xzh.weixin.web.dao.model.UserModel;
+import com.xzh.weixin.web.service.CommentAgreeService;
 import com.xzh.weixin.web.service.CommentService;
 import com.xzh.weixin.web.service.UserService;
 import org.slf4j.Logger;
@@ -34,11 +36,12 @@ public class CommentController {
     UserService userService;
     @Resource
     CommentService commentService;
-
+    @Resource
+    CommentAgreeService commentAgreeService;
 
     @ResponseBody
     @RequestMapping(value = "/get", method = {RequestMethod.GET, RequestMethod.POST})
-    public ResponseDTO<List<Map>> get(long rid) {
+    public ResponseDTO<List<Map>> get(long rid, String uid) {
 
         ResponseDTO<List<Map>> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
         try {
@@ -51,7 +54,7 @@ public class CommentController {
                 List<CommentModel> attach = listResponseDTO.getAttach();
                 for (CommentModel commentModel : attach) {
 
-                    HashMap<String, String> map = new HashMap<>();
+                    HashMap<String, Object> map = new HashMap<>();
 
                     String fromNick = "";
                     String fromHead = "";
@@ -83,6 +86,37 @@ public class CommentController {
 
                     map.put("content", commentModel.getContent());
                     map.put("rid", String.valueOf(rid));
+                    map.put("cmid", String.valueOf(commentModel.getCmid()));
+                    map.put("agreeCount", commentModel.getAgreeCount());
+                    map.put("treadCount", commentModel.getTreadCount());
+
+
+                    ResponseDTO<CommentAgreeModel> commentAgreeModelResponseDTO = commentAgreeService.selectByUidAndCmid(uid, commentModel.getCmid());
+
+                    if (commentAgreeModelResponseDTO.getCode() == ReturnCode.ACTIVE_SUCCESS.code()) {
+                        CommentAgreeModel attach1 = commentAgreeModelResponseDTO.getAttach();
+
+                        if (attach1 == null) {
+                            map.put("isAgree", false);
+                            map.put("isTread", false);
+                        } else {
+
+                            Integer tread = attach1.getTread();
+
+                            if (tread == null || tread.intValue() == 0) {
+                                map.put("isTread", true);
+                            } else {
+                                map.put("isTread", false);
+                            }
+                            Integer agree = attach1.getAgree();
+
+                            if (agree == null || agree.intValue() == 0) {
+                                map.put("isAgree", true);
+                            } else {
+                                map.put("isAgree", false);
+                            }
+                        }
+                    }
                     result.add(map);
                 }
                 responseDTO.setAttach(result);
@@ -119,4 +153,113 @@ public class CommentController {
     }
 
 
+    @ResponseBody
+    @RequestMapping(value = "/addAgree", method = {RequestMethod.GET, RequestMethod.POST})
+    public ResponseDTO<String> addAgree(long cmid, String uid) {
+
+        ResponseDTO<String> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
+
+        try {
+            ResponseDTO<CommentAgreeModel> listResponseDTO = commentAgreeService.selectByUidAndCmid(uid, cmid);
+
+            if (listResponseDTO.getCode() == ReturnCode.ACTIVE_SUCCESS.code()) {
+                CommentAgreeModel attach = listResponseDTO.getAttach();
+                if (attach != null) {
+                    if (attach.getAgree() == null) {
+                        commentService.updateAgree(cmid);
+                    }
+                    commentAgreeService.updateAgree(uid, cmid, 1);
+                } else {
+                    CommentAgreeModel commentAgreeModel = new CommentAgreeModel();
+                    commentAgreeModel.setUid(uid);
+                    commentAgreeModel.setCmid(cmid);
+                    commentAgreeModel.setAgree(1);
+                    commentAgreeService.insert(commentAgreeModel);
+                    commentService.updateAgree(cmid);
+                }
+                responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return responseDTO;
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/delAgree", method = {RequestMethod.GET, RequestMethod.POST})
+    public ResponseDTO<String> delAgree(long cmid, String uid) {
+
+        ResponseDTO<String> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
+
+        try {
+            ResponseDTO<CommentAgreeModel> listResponseDTO = commentAgreeService.selectByUidAndCmid(uid, cmid);
+
+            if (listResponseDTO.getCode() == ReturnCode.ACTIVE_SUCCESS.code()) {
+                CommentAgreeModel attach = listResponseDTO.getAttach();
+                if (attach != null && attach.getAgree() != 0) {
+                    commentAgreeService.updateAgree(uid, cmid, 0);
+                }
+                responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return responseDTO;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/addTread", method = {RequestMethod.GET, RequestMethod.POST})
+    public ResponseDTO<String> addTread(long cmid, String uid) {
+
+        ResponseDTO<String> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
+
+        try {
+            ResponseDTO<CommentAgreeModel> listResponseDTO = commentAgreeService.selectByUidAndCmid(uid, cmid);
+
+            if (listResponseDTO.getCode() == ReturnCode.ACTIVE_SUCCESS.code()) {
+                CommentAgreeModel attach = listResponseDTO.getAttach();
+                if (attach != null) {
+                    if (attach.getAgree() == null) {
+                        commentService.updateTread(cmid);
+                    }
+                    commentAgreeService.updateTread(uid, cmid, 1);
+                } else {
+                    CommentAgreeModel commentAgreeModel = new CommentAgreeModel();
+                    commentAgreeModel.setUid(uid);
+                    commentAgreeModel.setCmid(cmid);
+                    commentAgreeModel.setAgree(1);
+                    commentAgreeService.insert(commentAgreeModel);
+                    commentService.updateTread(cmid);
+                }
+                responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return responseDTO;
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/delTread", method = {RequestMethod.GET, RequestMethod.POST})
+    public ResponseDTO<String> delTread(long cmid, String uid) {
+
+        ResponseDTO<String> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
+
+        try {
+            ResponseDTO<CommentAgreeModel> listResponseDTO = commentAgreeService.selectByUidAndCmid(uid, cmid);
+
+            if (listResponseDTO.getCode() == ReturnCode.ACTIVE_SUCCESS.code()) {
+                CommentAgreeModel attach = listResponseDTO.getAttach();
+                if (attach != null && attach.getTread() != 0) {
+                    commentAgreeService.updateTread(uid, cmid, 0);
+                }
+                responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return responseDTO;
+    }
 }
