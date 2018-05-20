@@ -97,28 +97,28 @@ public class CommentController {
                         CommentAgreeModel attach1 = commentAgreeModelResponseDTO.getAttach();
 
                         if (attach1 == null) {
-                            map.put("isAgree", false);
-                            map.put("isTread", false);
+                            map.put("isAgree", true);
+                            map.put("isTread", true);
                         } else {
 
                             Integer tread = attach1.getTread();
 
                             if (tread == null || tread.intValue() == 0) {
-                                map.put("isTread", false);
-                            } else {
                                 map.put("isTread", true);
+                            } else {
+                                map.put("isTread", false);
                             }
                             Integer agree = attach1.getAgree();
 
                             if (agree == null || agree.intValue() == 0) {
-                                map.put("isAgree", false);
-                            } else {
                                 map.put("isAgree", true);
+                            } else {
+                                map.put("isAgree", false);
                             }
                         }
                     } else {
-                        map.put("isAgree", false);
-                        map.put("isTread", false);
+                        map.put("isAgree", true);
+                        map.put("isTread", true);
                     }
                     result.add(map);
                 }
@@ -158,9 +158,10 @@ public class CommentController {
 
     @ResponseBody
     @RequestMapping(value = "/addAgree", method = {RequestMethod.GET, RequestMethod.POST})
-    public ResponseDTO<String> addAgree(long cmid, String uid) {
+    public ResponseDTO<Integer> addAgree(long cmid, String uid) {
 
-        ResponseDTO<String> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
+
+        ResponseDTO<Integer> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
 
         try {
             ResponseDTO<CommentAgreeModel> listResponseDTO = commentAgreeService.selectByUidAndCmid(uid, cmid);
@@ -168,9 +169,7 @@ public class CommentController {
             if (listResponseDTO.getCode() == ReturnCode.ACTIVE_SUCCESS.code()) {
                 CommentAgreeModel attach = listResponseDTO.getAttach();
                 if (attach != null) {
-                    if (attach.getAgree() == null) {
-                        commentService.updateAgree(cmid);
-                    }
+                    commentService.updateAgree(cmid);
                     commentAgreeService.updateAgree(uid, cmid, 1);
                 } else {
                     CommentAgreeModel commentAgreeModel = new CommentAgreeModel();
@@ -179,6 +178,14 @@ public class CommentController {
                     commentAgreeModel.setAgree(1);
                     commentAgreeService.insert(commentAgreeModel);
                     commentService.updateAgree(cmid);
+                }
+                ResponseDTO<CommentModel> commentModelResponseDTO = commentService.selectByCmid(cmid);
+                if (commentModelResponseDTO.getCode() == ReturnCode.ACTIVE_SUCCESS.code()) {
+                    CommentModel attach1 = commentModelResponseDTO.getAttach();
+                    Integer agreeCount = attach1.getAgreeCount();
+                    responseDTO.setAttach(agreeCount);
+                } else {
+                    responseDTO.setAttach(0);
                 }
                 responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
             }
@@ -191,17 +198,26 @@ public class CommentController {
 
     @ResponseBody
     @RequestMapping(value = "/delAgree", method = {RequestMethod.GET, RequestMethod.POST})
-    public ResponseDTO<String> delAgree(long cmid, String uid) {
+    public ResponseDTO<Integer> delAgree(long cmid, String uid) {
 
-        ResponseDTO<String> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
+        ResponseDTO<Integer> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
 
         try {
             ResponseDTO<CommentAgreeModel> listResponseDTO = commentAgreeService.selectByUidAndCmid(uid, cmid);
 
             if (listResponseDTO.getCode() == ReturnCode.ACTIVE_SUCCESS.code()) {
                 CommentAgreeModel attach = listResponseDTO.getAttach();
-                if (attach != null && attach.getAgree() != 0) {
+                if (attach != null && attach.getAgree() > 0) {
                     commentAgreeService.updateAgree(uid, cmid, 0);
+                    commentService.delAgree(cmid);
+                }
+                ResponseDTO<CommentModel> commentModelResponseDTO = commentService.selectByCmid(cmid);
+                if (commentModelResponseDTO.getCode() == ReturnCode.ACTIVE_SUCCESS.code()) {
+                    CommentModel attach1 = commentModelResponseDTO.getAttach();
+                    Integer agreeCount = attach1.getAgreeCount();
+                    responseDTO.setAttach(agreeCount);
+                } else {
+                    responseDTO.setAttach(0);
                 }
                 responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
             }
@@ -213,9 +229,9 @@ public class CommentController {
 
     @ResponseBody
     @RequestMapping(value = "/addTread", method = {RequestMethod.GET, RequestMethod.POST})
-    public ResponseDTO<String> addTread(long cmid, String uid) {
+    public ResponseDTO<Integer> addTread(long cmid, String uid) {
 
-        ResponseDTO<String> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
+        ResponseDTO<Integer> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
 
         try {
             ResponseDTO<CommentAgreeModel> listResponseDTO = commentAgreeService.selectByUidAndCmid(uid, cmid);
@@ -223,17 +239,25 @@ public class CommentController {
             if (listResponseDTO.getCode() == ReturnCode.ACTIVE_SUCCESS.code()) {
                 CommentAgreeModel attach = listResponseDTO.getAttach();
                 if (attach != null) {
-                    if (attach.getAgree() == null) {
-                        commentService.updateTread(cmid);
-                    }
+                    commentService.updateTread(cmid);
                     commentAgreeService.updateTread(uid, cmid, 1);
                 } else {
                     CommentAgreeModel commentAgreeModel = new CommentAgreeModel();
                     commentAgreeModel.setUid(uid);
                     commentAgreeModel.setCmid(cmid);
-                    commentAgreeModel.setAgree(1);
+                    commentAgreeModel.setTread(1);
                     commentAgreeService.insert(commentAgreeModel);
                     commentService.updateTread(cmid);
+                }
+
+
+                ResponseDTO<CommentModel> commentModelResponseDTO = commentService.selectByCmid(cmid);
+                if (commentModelResponseDTO.getCode() == ReturnCode.ACTIVE_SUCCESS.code()) {
+                    CommentModel attach1 = commentModelResponseDTO.getAttach();
+                    Integer treadCount = attach1.getTreadCount();
+                    responseDTO.setAttach(treadCount);
+                } else {
+                    responseDTO.setAttach(0);
                 }
                 responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
             }
@@ -246,17 +270,26 @@ public class CommentController {
 
     @ResponseBody
     @RequestMapping(value = "/delTread", method = {RequestMethod.GET, RequestMethod.POST})
-    public ResponseDTO<String> delTread(long cmid, String uid) {
+    public ResponseDTO<Integer> delTread(long cmid, String uid) {
 
-        ResponseDTO<String> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
+        ResponseDTO<Integer> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
 
         try {
             ResponseDTO<CommentAgreeModel> listResponseDTO = commentAgreeService.selectByUidAndCmid(uid, cmid);
 
             if (listResponseDTO.getCode() == ReturnCode.ACTIVE_SUCCESS.code()) {
                 CommentAgreeModel attach = listResponseDTO.getAttach();
-                if (attach != null && attach.getTread() != 0) {
+                if (attach != null && attach.getTread() > 0) {
                     commentAgreeService.updateTread(uid, cmid, 0);
+                    commentService.delTread(cmid);
+                }
+                ResponseDTO<CommentModel> commentModelResponseDTO = commentService.selectByCmid(cmid);
+                if (commentModelResponseDTO.getCode() == ReturnCode.ACTIVE_SUCCESS.code()) {
+                    CommentModel attach1 = commentModelResponseDTO.getAttach();
+                    Integer treadCount = attach1.getTreadCount();
+                    responseDTO.setAttach(treadCount);
+                } else {
+                    responseDTO.setAttach(0);
                 }
                 responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
             }

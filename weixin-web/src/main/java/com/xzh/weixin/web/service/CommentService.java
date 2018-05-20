@@ -22,7 +22,20 @@ public class CommentService {
     CommentMapper commentMapper;
 
 
+    public ResponseDTO<String> delTread(long rid) {
 
+        ResponseDTO<String> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
+        try {
+            int updateAgree = commentMapper.delTread(rid);
+            if (updateAgree > 0) {
+                responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseDTO.setReturnCode(ReturnCode.ACTIVE_EXCEPTION);
+        }
+        return responseDTO;
+    }
 
     public ResponseDTO<String> updateTread(long rid) {
 
@@ -44,6 +57,22 @@ public class CommentService {
         ResponseDTO<String> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
         try {
             int updateAgree = commentMapper.updateAgree(cmid);
+            if (updateAgree > 0) {
+                responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseDTO.setReturnCode(ReturnCode.ACTIVE_EXCEPTION);
+        }
+        return responseDTO;
+    }
+
+
+    public ResponseDTO<String> delAgree(long cmid) {
+
+        ResponseDTO<String> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
+        try {
+            int updateAgree = commentMapper.delAgree(cmid);
             if (updateAgree > 0) {
                 responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
             }
@@ -77,6 +106,22 @@ public class CommentService {
 
         try {
             List<CommentModel> userModels = commentMapper.selectByRid(rid);
+            responseDTO.setAttach(userModels);
+            responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseDTO.setReturnCode(ReturnCode.ACTIVE_EXCEPTION);
+        }
+        return responseDTO;
+    }
+
+
+    public ResponseDTO<CommentModel> selectByCmid(long cmid) {
+
+        ResponseDTO<CommentModel> responseDTO = new ResponseDTO<>(ReturnCode.ACTIVE_FAILURE);
+
+        try {
+            CommentModel userModels = commentMapper.selectByCmid(cmid);
             responseDTO.setAttach(userModels);
             responseDTO.setReturnCode(ReturnCode.ACTIVE_SUCCESS);
         } catch (Exception e) {

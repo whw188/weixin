@@ -25,10 +25,25 @@ public interface CommentMapper {
 
     @Update({
             "update comment set",
+            "agree_count = agree_count - 1 ",
+            "where cmid = #{cmid,jdbcType=BIGINT} "
+    })
+    int delAgree(@Param("cmid") long cmid);
+
+    @Update({
+            "update comment set",
             "tread_count = tread_count + 1 ",
             "where cmid = #{cmid,jdbcType=BIGINT} "
     })
     int updateTread(@Param("cmid") long cmid);
+
+
+    @Update({
+            "update comment set",
+            "tread_count = tread_count - 1 ",
+            "where cmid = #{cmid,jdbcType=BIGINT} "
+    })
+    int delTread(@Param("cmid") long cmid);
 
     @Select({
             "select * from comment",
@@ -47,6 +62,25 @@ public interface CommentMapper {
             @Result(column = "status", property = "status", jdbcType = JdbcType.INTEGER)
     })
     List<CommentModel> selectByRid(@Param("rid") long rid);
+
+
+    @Select({
+            "select * from comment",
+            "where cmid = #{cmid,jdbcType=BIGINT} "
+    })
+    @Results({
+            @Result(column = "cmid", property = "cmid", jdbcType = JdbcType.BIGINT),
+            @Result(column = "from_uid", property = "fromUid", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "to_uid", property = "toUid", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "rid", property = "rid", jdbcType = JdbcType.BIGINT),
+            @Result(column = "content", property = "content", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "agree_count", property = "agreeCount", jdbcType = JdbcType.INTEGER),
+            @Result(column = "tread_count", property = "treadCount", jdbcType = JdbcType.INTEGER),
+            @Result(column = "create_time", property = "createTime", jdbcType = JdbcType.TIMESTAMP),
+            @Result(column = "update_time", property = "updateTime", jdbcType = JdbcType.TIMESTAMP),
+            @Result(column = "status", property = "status", jdbcType = JdbcType.INTEGER)
+    })
+    CommentModel selectByCmid(@Param("cmid") long cmid);
 
     @Insert({
             "insert into comment (from_uid, to_uid, rid, content )",
