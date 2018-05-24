@@ -242,6 +242,7 @@ public class UserController {
 
                     Integer price = attach1.getPrice();
                     result.put("price", price);
+                    result.put("summary", attach1.getSummary());
 
                     if (coin > price) {
                         result.put("status", "more");
