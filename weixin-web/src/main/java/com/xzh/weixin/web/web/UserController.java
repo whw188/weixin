@@ -138,6 +138,7 @@ public class UserController {
                 userModel.setUid(uid);
                 userModel.setHead(head);
                 userModel.setNick(nick);
+                userModel.setCoin(0);
                 return userService.insert(userModel);
             }
         } catch (Exception e) {
