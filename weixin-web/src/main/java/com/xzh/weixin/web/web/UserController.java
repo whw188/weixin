@@ -245,7 +245,7 @@ public class UserController {
                     result.put("price", price);
                     result.put("summary", attach1.getSummary());
 
-                    if (coin > price) {
+                    if (coin >= price) {
                         result.put("status", "more");
                     } else {
                         result.put("status", "less");
